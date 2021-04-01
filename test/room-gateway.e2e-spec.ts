@@ -18,11 +18,7 @@ describe('RoomGateway (e2e)', () => {
   });
 
   beforeEach(() => {
-    client = io('http://localhost:3000', {
-      autoConnect: false,
-      transports: ['websocket'],
-      forceNew: true,
-    });
+    client = io('http://localhost:3000', { autoConnect: false });
   });
 
   afterEach(() => {
