@@ -7,15 +7,11 @@ import {
 import { Server, Socket } from 'socket.io';
 import { RoomService } from './room.service';
 
-@WebSocketGateway(9000, { transports: ['websocket'] })
+@WebSocketGateway()
 export class RoomGateway {
   @WebSocketServer() private readonly server: Server;
 
   constructor(private readonly service: RoomService) {}
-
-  handleConnection(@ConnectedSocket() client: Socket) {
-    this.server.to(client.id).emit('connected');
-  }
 
   @SubscribeMessage('createRoom')
   async createRoom(@ConnectedSocket() client: Socket) {
