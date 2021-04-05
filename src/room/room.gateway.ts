@@ -9,18 +9,16 @@ import { RoomService } from './room.service';
 
 @WebSocketGateway()
 export class RoomGateway {
-  @WebSocketServer() private readonly server: Server;
-
   constructor(private readonly service: RoomService) {}
 
-  @SubscribeMessage('createRoom')
+  @SubscribeMessage('room:create')
   async createRoom(@ConnectedSocket() client: Socket) {
     let roomId = this.service.getCurrentRoom(client);
-    if (!roomId) {
+    if (roomId) {
       throw new Error('Already joined a room');
     }
     roomId = this.service.randomRoomId();
     client.join(roomId);
-    this.server.to(roomId).emit('joinedRoom', { roomId });
+    return roomId;
   }
 }

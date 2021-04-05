@@ -18,7 +18,7 @@ describe('RoomGateway (e2e)', () => {
   });
 
   beforeEach(() => {
-    client = io('http://localhost:3000', { autoConnect: false });
+    client = io('http://localhost:3000');
   });
 
   afterEach(() => {
@@ -33,6 +33,14 @@ describe('RoomGateway (e2e)', () => {
     client.on('connect', () => {
       done();
     });
-    client.connect();
+  });
+
+  it('should create a room', done => {
+    client.on('connect', () => {
+      client.emit('room:create', (room: string) => {
+        expect(room).toBeDefined();
+        done();
+      });
+    });
   });
 });
