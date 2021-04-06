@@ -1,3 +1,6 @@
+import { Card } from './card';
+import { Player } from './player';
+
 const channels = {
   socialMedia: 0,
   mouth: 1,
@@ -10,16 +13,15 @@ const channels = {
 
 export type Channel = keyof typeof channels;
 
-export class PlayerState {
+export class PlayerState extends Player {
   money: number;
   people: number;
-  channels: Channel[];
-  cards: unknown[];
+  channels: Channel[] = [];
+  cards: Card[] = [];
+  ready = false;
 
-  constructor(readonly name: string, readonly avatar: string) {}
-
-  addMoney(money: number) {
-    this.money += money;
+  constructor(player: Player) {
+    super(player.id, player.name, player.avatar);
   }
 
   addPeople(count: number) {
@@ -40,5 +42,14 @@ export class PlayerState {
     );
 
     this.channels.splice(idx, 0, channel);
+  }
+
+  addCards(card: Card[]) {
+    this.cards.push(...card);
+  }
+
+  removeCard(id: string) {
+    const idx = this.cards.findIndex(c => c.id === id);
+    this.cards.splice(idx, 1);
   }
 }

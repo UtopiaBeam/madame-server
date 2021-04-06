@@ -1,4 +1,5 @@
-import { GameState } from './game-state';
+import { GameState } from '../util/game-state';
+import { Player } from '../util/player';
 
 export class StateRepository {
   private states: Record<string, GameState> = {};
@@ -7,9 +8,9 @@ export class StateRepository {
     return this.states[roomId];
   }
 
-  createGameState(roomId: string, name: string, avatar: string) {
+  createGameState(roomId: string, player: Player) {
     this.states[roomId] = new GameState();
-    this.states[roomId].addPlayer(name, avatar);
+    this.states[roomId].addPlayer(player);
   }
 
   deleteGameState(roomId: string) {

@@ -1,34 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { Socket } from 'socket.io';
-import { PlayerState } from '../state/player-state';
-import { StateService } from '../state/state.service';
-import { CreateRoomMessage, JoinRoomMessage } from './room.dto';
+import { GameService } from '../game/game.service';
+import { Player } from '../util/player';
+import { PlayerState } from '../util/player-state';
 
 @Injectable()
 export class RoomService {
-  constructor(private readonly stateService: StateService) {}
-
-  getCurrentRoom(client: Socket): string | undefined {
-    return Object.keys(client.rooms).find(r => r !== client.id);
-  }
+  constructor(private readonly gameService: GameService) {}
 
   private randomRoomId(min = 0, max = 99999): string {
     const roomNumber = Math.floor(min + Math.random() * (max - min + 1));
     return String(roomNumber).padStart(5, '0');
   }
 
-  createRoom({ name, avatar }: CreateRoomMessage): string {
+  createRoom(player: Player): string {
     const roomId = this.randomRoomId();
-    this.stateService.createRoom(roomId, name, avatar);
+    this.gameService.createRoom(roomId, player);
 
     return roomId;
   }
 
-  joinRoom({ roomId, name, avatar }: JoinRoomMessage) {
-    this.stateService.joinRoom(roomId, name, avatar);
+  joinRoom(roomId: string, player: Player) {
+    this.gameService.joinRoom(roomId, player);
   }
 
   getPlayers(roomId: string): PlayerState[] {
-    return this.stateService.getRoomGameState(roomId).players;
+    return this.gameService.getRoomGameState(roomId).playerStates;
   }
 }

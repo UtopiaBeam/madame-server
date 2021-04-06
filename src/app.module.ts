@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RoomModule } from './room/room.module';
-import { StateModule } from './state/state.module';
+import { GameModule } from './game/game.module';
 
 @Module({
-  imports: [RoomModule, StateModule],
+  imports: [RoomModule, GameModule],
   controllers: [AppController],
   providers: [AppService],
 })

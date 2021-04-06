@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as io from 'socket.io-client';
 import { RoomModule } from '../src/room/room.module';
-import { PlayerState } from '../src/state/player-state';
+import { PlayerState } from '../src/util/player-state';
 
 describe('RoomGateway (e2e)', () => {
   let app: INestApplication;

@@ -22,7 +22,7 @@ export class RoomGateway {
     if (room) {
       throw new Error('Already joined a room');
     }
-    room = this.service.createRoom(body);
+    room = this.service.createRoom({ id: client.id, ...body });
     client.join(room);
     return room;
   }
@@ -30,15 +30,15 @@ export class RoomGateway {
   @SubscribeMessage('room:join')
   async joinRoom(
     @ConnectedSocket() client: Socket,
-    @MessageBody() body: JoinRoomMessage,
+    @MessageBody() { roomId, ...player }: JoinRoomMessage,
     @Room() room?: string,
   ) {
     if (room) {
       throw new Error('Already joined a room');
     }
-    this.service.joinRoom(body);
-    client.join(body.roomId);
+    this.service.joinRoom(roomId, player);
+    client.join(roomId);
 
-    return this.service.getPlayers(body.roomId);
+    return this.service.getPlayers(roomId);
   }
 }
