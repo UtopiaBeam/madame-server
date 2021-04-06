@@ -3,9 +3,7 @@ import { StateRepository } from './state.repo';
 import { StateService } from './state.service';
 
 @Module({
-  providers: [
-    StateService,
-    { provide: 'STATE_REPO', useClass: StateRepository },
-  ],
+  providers: [StateRepository, StateService],
+  exports: [StateService],
 })
 export class StateModule {}

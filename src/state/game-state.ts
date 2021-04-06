@@ -18,7 +18,16 @@ export class GameState {
     return this.players.find(player => name === player.name);
   }
 
+  findOpponent(name: string) {
+    return this.players.find(player => player.name !== name);
+  }
+
   addTurn() {
     this.turn++;
+  }
+
+  deletePlayer(name: string) {
+    const idx = this.players.findIndex(player => player.name === name);
+    this.players.slice(idx, 1);
   }
 }
