@@ -50,4 +50,9 @@ export class GameState {
       {},
     );
   }
+
+  prepareNextTurn() {
+    this.turn++;
+    this.playerStates.forEach(state => state.prepareNextTurn());
+  }
 }

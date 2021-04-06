@@ -111,4 +111,8 @@ export class GameService {
       player.people += people;
     }
   }
+
+  prepareNextTurn(gameState: GameState) {
+    gameState.prepareNextTurn();
+  }
 }

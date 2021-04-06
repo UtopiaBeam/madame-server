@@ -68,4 +68,9 @@ export class PlayerState extends Player {
 
     this.channelCards[channelIdx] = null;
   }
+
+  prepareNextTurn() {
+    this.channelCards = [null, null, null, null, null, null, null];
+    this.ready = false;
+  }
 }
