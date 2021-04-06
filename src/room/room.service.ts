@@ -11,7 +11,7 @@ export class RoomService {
     return Object.keys(client.rooms).find(r => r !== client.id);
   }
 
-  private randomRoomId(min = 0, max = 10000): string {
+  private randomRoomId(min = 0, max = 99999): string {
     const roomNumber = Math.floor(min + Math.random() * (max - min + 1));
     return String(roomNumber).padStart(5, '0');
   }
