@@ -36,9 +36,13 @@ describe('RoomGateway (e2e)', () => {
   });
 
   it('should create a room', done => {
+    const name = 'john doe';
+    const avatar = '/path/to/avatar';
+
     client.on('connect', () => {
-      client.emit('room:create', (room: string) => {
+      client.emit('room:create', { name, avatar }, (room: string) => {
         expect(room).toBeDefined();
+        expect(room.length).toBe(5);
         done();
       });
     });
