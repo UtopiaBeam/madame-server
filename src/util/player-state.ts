@@ -60,11 +60,12 @@ export class PlayerState extends Player {
     }
 
     const card = this.findCard(cardId);
-    if (this.money < card.price) {
+    const price = card.isReal ? card.price : card.price / 2;
+    if (this.money < price) {
       throw new Error('Not enough money');
     }
     card.isReal = isReal;
-    this.money -= card.price;
+    this.money -= price;
     this.channelCards[channelIdx] = card;
     this.removeCard(cardId);
   }
@@ -76,8 +77,9 @@ export class PlayerState extends Player {
     }
 
     const card = this.channelCards[channelIdx];
+    const price = card.isReal ? card.price : card.price / 2;
     card.isReal = true;
-    this.money += card.price;
+    this.money += price;
     this.addCards([card]);
     this.channelCards[channelIdx] = null;
   }
