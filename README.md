@@ -1,75 +1,139 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+## State
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### `GameState`
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```ts
+{
+  turn: number
+  neutral: number
+  playerStates: PlayerState[]
+}
 ```
 
-## Running the app
+### `PlayerState`
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```ts
+{
+  money: number
+  people: number
+  availableChannels: ChannelName[]
+  unavailableChannels: ChannelName[]
+  cards: Card[]
+}
 ```
 
-## Test
+### `ChannelName`
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```ts
+'โซเชียลมีเดีย' |
+  'ปากต่อปาก' |
+  'เว็บเพจ' |
+  'โทรทัศน์' |
+  'วิทยุ' |
+  'สิ่งพิมพ์' |
+  'สื่อนอกบ้าน';
 ```
 
-## Support
+### `Card`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```ts
+{
+  id: string;
+  name: string;
+  isReal: boolean;
+  audioFactor: number;
+  textFactor: number;
+  visualFactor: number;
+  price: number;
+  effectType: 'pr' | 'attack';
+  from: PeopleSide;
+  to: PeopleSide;
+}
+```
 
-## Stay in touch
+### `PeopleSide`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```ts
+'neutral' | 'opponent' | 'player';
+```
 
-## License
+---
 
-  Nest is [MIT licensed](LICENSE).
+## Events
+
+### `room:create`
+
+Create a room
+
+Payload:
+
+```ts
+{
+  name: "test",
+  avatar: "avatar-name"
+}
+```
+
+Response: A string **roomId**
+
+### `room:join`
+
+Join an existing room
+
+Payload:
+
+```ts
+{
+  roomId: "00000",
+  name: "test",
+  avatar: "avatar-name"
+}
+```
+
+### `game:start`
+
+Start a game
+
+Payload: None
+
+Response: `GameState`
+
+### `game:place-card`
+
+Place a card in a channel
+
+Payload:
+
+```ts
+{
+  channel: ChannelName;
+  cardId: string;
+  isReal: boolean;
+}
+```
+
+Response: None
+
+### `game:unplace-card`
+
+Remove a card from a channel
+
+Payload:
+
+```ts
+{
+  channel: ChannelName;
+}
+```
+
+Response: None
+
+### `game:submit`
+
+Finish a user's turn
+
+Payload: None
+
+Response: None
+
+**Note:** The client has to subscribe to the event `game:result` to get the duel result. The server will emit the event with the game states after each channel's duel.
