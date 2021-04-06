@@ -1,7 +1,7 @@
 import { GameState } from './game-state';
 
 export class StateRepository {
-  private states: { [roomId: string]: GameState };
+  private states: Record<string, GameState> = {};
 
   getGameState(roomId: string): GameState | undefined {
     return this.states[roomId];

@@ -2,7 +2,7 @@ import { PlayerState } from './player-state';
 
 export class GameState {
   turn = 1;
-  players: PlayerState[];
+  players: PlayerState[] = [];
   neutral = 1000;
 
   addPlayer(name: string, avatar: string) {
