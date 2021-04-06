@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-export type PeopleSide = 'neutral' | 'opponent' | 'my';
+export type PeopleSide = 'neutral' | 'opponent' | 'player';
 
 export class Card {
   readonly id: string;

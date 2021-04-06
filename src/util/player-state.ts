@@ -1,47 +1,40 @@
 import { Card } from './card';
+import { channels, channelSpeed } from './channels';
 import { Player } from './player';
 
-const channels = {
-  socialMedia: 0,
-  mouth: 1,
-  webpage: 2,
-  tv: 3,
-  radio: 4,
-  newspaper: 5,
-  billboard: 6,
-};
-
-export type Channel = keyof typeof channels;
+export type ChannelName = keyof typeof channelSpeed;
 
 export class PlayerState extends Player {
   money: number;
   people: number;
-  channels: Channel[] = [];
+  channels: ChannelName[] = [];
   cards: Card[] = [];
+  channelCards: Card[] = [null, null, null, null, null, null, null];
   ready = false;
 
   constructor(player: Player) {
     super(player.id, player.name, player.avatar);
   }
 
-  addPeople(count: number) {
-    this.people += count;
-    if (this.people < 0) {
-      throw new Error('Negative people');
-    }
-  }
-
-  addChannel(channel: Channel) {
+  addChannel(channel: ChannelName) {
     if (this.channels.includes(channel)) {
       throw new Error('Channel bought');
     }
 
     const idx = this.channels.reduce(
-      (acc, c, idx) => (channels[c] < channels[channel] ? idx : acc),
+      (acc, c, idx) => (channelSpeed[c] < channelSpeed[channel] ? idx : acc),
       0,
     );
 
     this.channels.splice(idx, 0, channel);
+  }
+
+  findCardIndex(id: string) {
+    return this.cards.findIndex(c => c.id === id);
+  }
+
+  findCard(id: string) {
+    return this.cards.find(c => c.id === id);
   }
 
   addCards(card: Card[]) {
@@ -49,7 +42,30 @@ export class PlayerState extends Player {
   }
 
   removeCard(id: string) {
-    const idx = this.cards.findIndex(c => c.id === id);
+    const idx = this.findCardIndex(id);
     this.cards.splice(idx, 1);
+  }
+
+  findChannelIndex(channel: ChannelName) {
+    return channels.findIndex(c => channel === c.name);
+  }
+
+  addChannelCard(channel: ChannelName, cardId: string) {
+    const channelIdx = this.findChannelIndex(channel);
+    if (this.channelCards[channelIdx]) {
+      throw new Error('Channel not empty');
+    }
+
+    this.channelCards[channelIdx] = this.findCard(cardId);
+    this.removeCard(cardId);
+  }
+
+  removeChannelCard(channel: ChannelName) {
+    const channelIdx = this.findChannelIndex(channel);
+    if (!this.channelCards[channelIdx]) {
+      throw new Error('Channel empty');
+    }
+
+    this.channelCards[channelIdx] = null;
   }
 }
