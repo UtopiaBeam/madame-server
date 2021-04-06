@@ -37,5 +37,7 @@ export class RoomGateway {
     }
     this.service.joinRoom(body);
     client.join(body.roomId);
+
+    return this.service.getPlayers(body.roomId);
   }
 }

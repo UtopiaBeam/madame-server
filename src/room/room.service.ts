@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Socket } from 'socket.io';
+import { PlayerState } from '../state/player-state';
 import { StateService } from '../state/state.service';
 import { CreateRoomMessage, JoinRoomMessage } from './room.dto';
 
@@ -25,5 +26,9 @@ export class RoomService {
 
   joinRoom({ roomId, name, avatar }: JoinRoomMessage) {
     this.stateService.joinRoom(roomId, name, avatar);
+  }
+
+  getPlayers(roomId: string): PlayerState[] {
+    return this.stateService.getRoomGameState(roomId).players;
   }
 }
