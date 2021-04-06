@@ -115,4 +115,15 @@ export class GameService {
   prepareNextTurn(gameState: GameState) {
     gameState.prepareNextTurn();
   }
+
+  start(roomId: string) {
+    const gameState = this.getGameState(roomId);
+    if (gameState.playerStates.length < 2) {
+      throw new Error('Room is not full');
+    }
+
+    gameState.start();
+
+    return gameState;
+  }
 }

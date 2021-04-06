@@ -1,4 +1,4 @@
-import { Card } from './card';
+import { Card, randomCards } from './card';
 import { channels, channelSpeed } from './channels';
 import { Player } from './player';
 
@@ -50,13 +50,15 @@ export class PlayerState extends Player {
     return channels.findIndex(c => channel === c.name);
   }
 
-  addChannelCard(channel: ChannelName, cardId: string) {
+  addChannelCard(channel: ChannelName, cardId: string, isReal: boolean) {
     const channelIdx = this.findChannelIndex(channel);
     if (this.channelCards[channelIdx]) {
       throw new Error('Channel not empty');
     }
 
-    this.channelCards[channelIdx] = this.findCard(cardId);
+    const card = this.findCard(cardId);
+    card.isReal = isReal;
+    this.channelCards[channelIdx] = card;
     this.removeCard(cardId);
   }
 
@@ -66,11 +68,19 @@ export class PlayerState extends Player {
       throw new Error('Channel empty');
     }
 
+    const card = this.channelCards[channelIdx];
+    card.isReal = true;
+    this.addCards([card]);
     this.channelCards[channelIdx] = null;
   }
 
   prepareNextTurn() {
     this.channelCards = [null, null, null, null, null, null, null];
     this.ready = false;
+  }
+
+  start() {
+    this.cards = randomCards();
+    this.channels = ['ปากต่อปาก', 'เว็บเพจ', 'สิ่งพิมพ์'];
   }
 }

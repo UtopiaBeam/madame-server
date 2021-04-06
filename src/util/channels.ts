@@ -58,7 +58,12 @@ export const channels = [
   },
 ];
 
-export const channelSpeed: Record<string, number> = channels.reduce(
-  (acc, channel, idx) => ({ ...acc, [channel.name]: idx }),
-  {},
-);
+export const channelSpeed = {
+  โซเชียลมีเดีย: 0,
+  ปากต่อปาก: 1,
+  เว็บเพจ: 2,
+  โทรทัศน์: 3,
+  วิทยุ: 4,
+  สิ่งพิมพ์: 5,
+  สื่อนอกบ้าน: 6,
+};
