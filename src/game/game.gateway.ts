@@ -47,9 +47,9 @@ export class GameGateway {
   submit(@ConnectedSocket() client: Socket, @Room() room?: string) {
     const allReady = this.service.markPlayerReady(room, client.id);
     if (allReady) {
-      const gameState = this.service.battle(room);
-      this.server.emit('game:result', gameState);
-      this.service.prepareNextTurn(gameState);
+      const gameStates = this.service.battle(room);
+      this.server.emit('game:result', gameStates);
+      this.service.prepareNextTurn(gameStates[gameStates.length - 1]);
     }
   }
 }

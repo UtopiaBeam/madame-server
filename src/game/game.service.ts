@@ -31,10 +31,11 @@ export class GameService {
     return gameState.markPlayerReady(playerId);
   }
 
-  battle(roomId: string): GameState {
+  battle(roomId: string): GameState[] {
     const gameState = this.getGameState(roomId);
     const cards = gameState.getChannelCards();
     const [p1, p2] = Object.keys(cards);
+    const gameStates: GameState[] = [];
 
     for (let i = 0; i < cards[p1].length; i++) {
       const p1Card = cards[p1][i];
@@ -56,9 +57,11 @@ export class GameService {
 
       this.updatePeople(gameState, p1, p1Card, p1People);
       this.updatePeople(gameState, p2, p2Card, p2People);
+
+      gameStates.push(gameState);
     }
 
-    return gameState;
+    return gameStates;
   }
 
   private calculateTotalFactor(channel: Channel, card: Card): number {
