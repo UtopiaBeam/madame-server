@@ -7,7 +7,8 @@ export type ChannelName = keyof typeof channelSpeed;
 export class PlayerState extends Player {
   money: number;
   people: number;
-  channels: ChannelName[] = [];
+  availableChannels: ChannelName[] = [];
+  unavailableChannels: ChannelName[] = [];
   cards: Card[] = [];
   channelCards: Card[] = [null, null, null, null, null, null, null];
   ready = false;
@@ -17,16 +18,18 @@ export class PlayerState extends Player {
   }
 
   addChannel(channel: ChannelName) {
-    if (this.channels.includes(channel)) {
+    if (this.availableChannels.includes(channel)) {
       throw new Error('Channel bought');
     }
 
-    const idx = this.channels.reduce(
+    let idx = this.availableChannels.reduce(
       (acc, c, idx) => (channelSpeed[c] < channelSpeed[channel] ? idx : acc),
       0,
     );
 
-    this.channels.splice(idx, 0, channel);
+    this.availableChannels.splice(idx, 0, channel);
+    idx = this.unavailableChannels.findIndex(c => c === channel);
+    this.unavailableChannels.splice(idx, 1);
   }
 
   findCardIndex(id: string) {
@@ -87,6 +90,12 @@ export class PlayerState extends Player {
 
   start() {
     this.cards = randomCards();
-    this.channels = ['ปากต่อปาก', 'เว็บเพจ', 'สิ่งพิมพ์'];
+    this.availableChannels = ['ปากต่อปาก', 'เว็บเพจ', 'สิ่งพิมพ์'];
+    this.unavailableChannels = [
+      'โซเชียลมีเดีย',
+      'โทรทัศน์',
+      'วิทยุ',
+      'สื่อนอกบ้าน',
+    ];
   }
 }
