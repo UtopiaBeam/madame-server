@@ -82,6 +82,7 @@ export class PlayerState extends Player {
   prepareNextTurn() {
     this.channelCards = [null, null, null, null, null, null, null];
     this.ready = false;
+    this.addCards(randomCards(3));
   }
 
   start() {
