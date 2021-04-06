@@ -1,24 +1,30 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { StateRepository } from '../game/state.repo';
+import { Injectable } from '@nestjs/common';
 import { GameState } from '../util/game-state';
 import { Player } from '../util/player';
 
 @Injectable()
 export class GameService {
-  constructor(
-    @Inject('StateRepository') private readonly repo: StateRepository,
-  ) {}
+  private states: Record<string, GameState> = {};
 
-  getRoomGameState(roomId: string): GameState {
-    return this.repo.getGameState(roomId);
+  getGameState(roomId: string): GameState {
+    return this.states[roomId];
   }
 
-  createRoom(roomId: string, player: Player) {
-    this.repo.createGameState(roomId, player);
+  createGameState(roomId: string, player: Player) {
+    this.states[roomId] = new GameState();
+    this.states[roomId].addPlayer(player);
+  }
+
+  deleteGameState(roomId: string) {
+    delete this.states[roomId];
   }
 
   joinRoom(roomId: string, player: Player) {
-    const gameState = this.getRoomGameState(roomId);
+    const gameState = this.getGameState(roomId);
     gameState.addPlayer(player);
+  }
+
+  markPlayerReady(roomId: string, playerId: string) {
+    const gameState = this.getGameState;
   }
 }

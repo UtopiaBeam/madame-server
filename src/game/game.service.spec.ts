@@ -1,18 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StateRepository } from '../game/state.repo';
 import { GameService } from './game.service';
 
 describe('GameService', () => {
   let service: GameService;
-  let repo: StateRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GameService, StateRepository],
+      providers: [GameService],
     }).compile();
 
     service = module.get<GameService>(GameService);
-    repo = module.get<StateRepository>(StateRepository);
   });
 
   it('should be defined', () => {
@@ -26,11 +23,11 @@ describe('GameService', () => {
     const avatar = '/path/to/avatar';
 
     it('should have 1 player', () => {
-      jest.spyOn(repo, 'createGameState');
-      service.createRoom(roomId, { id, name, avatar });
+      jest.spyOn(service, 'createGameState');
+      service.createGameState(roomId, { id, name, avatar });
 
-      expect(repo.createGameState).toBeCalledTimes(1);
-      expect(repo.getGameState(roomId)).toBeDefined();
+      expect(service.createGameState).toBeCalledTimes(1);
+      expect(service.getGameState(roomId)).toBeDefined();
     });
   });
 });

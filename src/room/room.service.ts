@@ -14,7 +14,7 @@ export class RoomService {
 
   createRoom(player: Player): string {
     const roomId = this.randomRoomId();
-    this.gameService.createRoom(roomId, player);
+    this.gameService.createGameState(roomId, player);
 
     return roomId;
   }
@@ -24,6 +24,6 @@ export class RoomService {
   }
 
   getPlayers(roomId: string): PlayerState[] {
-    return this.gameService.getRoomGameState(roomId).playerStates;
+    return this.gameService.getGameState(roomId).playerStates;
   }
 }

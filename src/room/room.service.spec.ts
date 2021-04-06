@@ -13,7 +13,7 @@ describe('RoomService', () => {
         {
           provide: GameService,
           useValue: {
-            createRoom: jest.fn(),
+            createGameState: jest.fn(),
           },
         },
       ],
@@ -36,12 +36,12 @@ describe('RoomService', () => {
     const name = 'john doe';
     const avatar = '/path/to/avatar';
 
-    jest.spyOn(gameService, 'createRoom');
+    jest.spyOn(gameService, 'createGameState');
 
     const roomId = service.createRoom({ id, name, avatar });
 
-    expect(gameService.createRoom).toBeCalledTimes(1);
-    expect(gameService.createRoom).toBeCalledWith(roomId, {
+    expect(gameService.createGameState).toBeCalledTimes(1);
+    expect(gameService.createGameState).toBeCalledWith(roomId, {
       id,
       name,
       avatar,
