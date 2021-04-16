@@ -6,6 +6,7 @@ export class GameState {
   turn = 1;
   playerStates: PlayerState[] = [];
   neutral = 999;
+  startTime: Date = null;
 
   addPlayer(player: Player) {
     if (this.playerStates.length >= 2) {
@@ -58,5 +59,6 @@ export class GameState {
 
   start() {
     this.playerStates.forEach(state => state.start());
+    this.startTime = new Date();
   }
 }
