@@ -7,7 +7,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Room } from '../decorators/room.decorator';
-import { PlaceCardMessage, UnplaceCardMessage } from './game.dto';
+import {
+  BuyChannelMessage,
+  PlaceCardMessage,
+  UnplaceCardMessage,
+} from './game.dto';
 import { GameService } from './game.service';
 
 @WebSocketGateway()
@@ -17,7 +21,7 @@ export class GameGateway {
   constructor(private readonly service: GameService) {}
 
   @SubscribeMessage('game:start')
-  start(@Room() room?: string) {
+  start(@Room() room: string) {
     return this.service.start(room);
   }
 
@@ -25,7 +29,7 @@ export class GameGateway {
   placeCard(
     @ConnectedSocket() client: Socket,
     @MessageBody() msg: PlaceCardMessage,
-    @Room() room?: string,
+    @Room() room: string,
   ) {
     const gameState = this.service.getGameState(room);
     const playerState = gameState.findPlayer(client.id);
@@ -36,11 +40,22 @@ export class GameGateway {
   unplaceCard(
     @ConnectedSocket() client: Socket,
     @MessageBody() msg: UnplaceCardMessage,
-    @Room() room?: string,
+    @Room() room: string,
   ) {
     const gameState = this.service.getGameState(room);
     const playerState = gameState.findPlayer(client.id);
     playerState.removeChannelCard(msg.channel);
+  }
+
+  @SubscribeMessage('game:buy-channel')
+  buyChannel(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() msg: BuyChannelMessage,
+    @Room() room: string,
+  ) {
+    const gameState = this.service.getGameState(room);
+    const playerState = gameState.findPlayer(client.id);
+    playerState.buyChannel(msg.channel);
   }
 
   @SubscribeMessage('game:submit')

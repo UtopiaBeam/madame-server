@@ -17,7 +17,7 @@ export class PlayerState extends Player {
     super(player.id, player.name, player.avatar);
   }
 
-  addChannel(channel: ChannelName) {
+  buyChannel(channel: ChannelName) {
     if (this.availableChannels.includes(channel)) {
       throw new Error('Channel bought');
     }
@@ -30,6 +30,8 @@ export class PlayerState extends Player {
     this.availableChannels.splice(idx, 0, channel);
     idx = this.unavailableChannels.findIndex(c => c === channel);
     this.unavailableChannels.splice(idx, 1);
+
+    // TODO: pay for channel
   }
 
   findCardIndex(id: string) {

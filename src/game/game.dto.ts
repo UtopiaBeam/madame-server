@@ -9,3 +9,7 @@ export interface PlaceCardMessage {
 export interface UnplaceCardMessage {
   channel: ChannelName;
 }
+
+export interface BuyChannelMessage {
+  channel: ChannelName;
+}
