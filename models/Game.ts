@@ -1,8 +1,10 @@
 import { PlayerStore } from '../stores/PlayerStore';
 import { CardData } from '../utils/CardData';
+import { ChannelData } from '../utils/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
 import { Card } from './Card';
+import { Channel } from './Channel';
 import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 
@@ -36,7 +38,7 @@ export class Game {
     return {
       id: this.id,
       round: this.round,
-      ...player,
+      ...player.info,
       people: this._playersPeople[playerId],
       neutral: this.getNeutralPeople(),
       opponent: this._playersPeople[this.getOpponent(playerId).id],
@@ -64,6 +66,12 @@ export class Game {
         const cardType = RandomGenerator.integer(0, CardData.totalTypes);
         player.cards.push(new Card(cardType));
       }
+      player.availableChannels = ChannelData.freeChannels.map(
+        c => new Channel(c.order),
+      );
+      player.unavailableChannels = ChannelData.paidChannels.map(
+        c => new Channel(c.order),
+      );
     });
     this._timer.start(this._setting.roundTime);
   }

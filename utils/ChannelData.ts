@@ -71,4 +71,12 @@ export class ChannelData {
   public static getChannel(channelType: number) {
     return this.channels[channelType];
   }
+
+  public static get freeChannels() {
+    return this.channels.filter(c => c.price === 0);
+  }
+
+  public static get paidChannels() {
+    return this.channels.filter(c => c.price === 0);
+  }
 }

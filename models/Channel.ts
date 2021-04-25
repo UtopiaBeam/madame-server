@@ -8,7 +8,7 @@ export class Channel {
     this.id = RandomGenerator.uuid();
   }
 
-  public getInfo() {
+  public get info() {
     const channel = ChannelData.getChannel(this.channelType);
     return { id: this.id, ...channel };
   }
