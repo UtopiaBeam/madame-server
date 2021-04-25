@@ -1,3 +1,8 @@
+export enum EffectType {
+  PR = 'pr',
+  Attack = 'attack',
+}
+
 export class CardData {
   public static cards = {
     0: {
@@ -6,9 +11,7 @@ export class CardData {
       visualFactor: 1,
       textFactor: 1,
       cost: 50,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     1: {
       name: 'โอ้ย ฉันทำงานหนักแหละ',
@@ -16,9 +19,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 5,
       cost: 110,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     2: {
       name: 'ประกาศนโยบาย',
@@ -26,9 +27,7 @@ export class CardData {
       visualFactor: 2,
       textFactor: 1,
       cost: 140,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     3: {
       name: 'รักนะยัยประชาชน',
@@ -36,9 +35,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 4,
       cost: 100,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     4: {
       name: 'บริจาคการกุศล',
@@ -46,9 +43,7 @@ export class CardData {
       visualFactor: 20,
       textFactor: 0,
       cost: 220,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     5: {
       name: 'ไปบ้านเด็กกำพร้า',
@@ -56,9 +51,7 @@ export class CardData {
       visualFactor: 7,
       textFactor: 0,
       cost: 130,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     6: {
       name: 'รณรงค์เรื่องเพศหลากหลาย',
@@ -66,9 +59,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 14,
       cost: 180,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     7: {
       name: 'ลงพื้นที่ไปหาชาวบ้าน',
@@ -76,15 +67,11 @@ export class CardData {
       visualFactor: 10,
       textFactor: 15,
       cost: 320,
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
     },
     8: {
       name: 'ฉันจบเกียรตินิยม มหาลัยชั้นนำนะจ๊ะ!',
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
       audioFactor: 12,
       visualFactor: 0,
       textFactor: 12,
@@ -92,9 +79,7 @@ export class CardData {
     },
     9: {
       name: 'ร้องเพลงปลุกใจประชาชน',
-      effectType: 'pr',
-      from: 'neutral',
-      to: 'player',
+      effectType: EffectType.PR,
       audioFactor: 25,
       visualFactor: 0,
       textFactor: 0,
@@ -106,9 +91,7 @@ export class CardData {
       visualFactor: 20,
       textFactor: 0,
       cost: 300,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     11: {
       name: 'มันด่าประชาชน!!!',
@@ -116,9 +99,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 8,
       cost: 140,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     12: {
       name: 'นโยบายเขาแย่',
@@ -126,9 +107,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 0,
       cost: 150,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     13: {
       name: 'เธอ ซื้อ เสียง',
@@ -136,9 +115,7 @@ export class CardData {
       visualFactor: 10,
       textFactor: 15,
       cost: 420,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     14: {
       name: 'นางทำงานไม่เป็น',
@@ -146,9 +123,7 @@ export class CardData {
       visualFactor: 3,
       textFactor: 2,
       cost: 120,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     15: {
       name: 'ลูกชายนางเป็นเด็กเกเร',
@@ -156,9 +131,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 7,
       cost: 130,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     16: {
       name: 'นางแอบล่าสัตว์สงวน',
@@ -166,9 +139,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 0,
       cost: 200,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     17: {
       name: 'นางซื้อกระเป๋าจระเข้!',
@@ -176,9 +147,7 @@ export class CardData {
       visualFactor: 3,
       textFactor: 0,
       cost: 60,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
     18: {
       name: 'นางโพสต์บุลลี่เพื่อนค่า!!',
@@ -186,9 +155,7 @@ export class CardData {
       visualFactor: 0,
       textFactor: 25,
       cost: 240,
-      effectType: 'attack',
-      from: 'opponent',
-      to: 'neutral',
+      effectType: EffectType.Attack,
     },
   };
 
