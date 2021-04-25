@@ -1,10 +1,6 @@
 import { PlayerStore } from '../stores/PlayerStore';
-import { CardData } from '../utils/CardData';
-import { ChannelData } from '../utils/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
-import { Card } from './Card';
-import { Channel } from './Channel';
 import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 
@@ -61,17 +57,7 @@ export class Game {
     this.round = 1;
     this._players.forEach(player => {
       this._playersPeople[player.id] = this._setting.startPeople;
-      player.gold = this._setting.startGold;
-      for (let i = 0; i < this._setting.startNumberOfCards; i++) {
-        const cardType = RandomGenerator.integer(0, CardData.totalTypes);
-        player.cards.push(new Card(cardType));
-      }
-      player.availableChannels = ChannelData.freeChannels.map(
-        c => new Channel(c.order),
-      );
-      player.unavailableChannels = ChannelData.paidChannels.map(
-        c => new Channel(c.order),
-      );
+      player.startGame(this._setting);
     });
     this._timer.start(this._setting.roundTime);
   }

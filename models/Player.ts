@@ -1,7 +1,9 @@
+import { CardData } from '../utils/CardData';
 import { ChannelData } from '../utils/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Card } from './Card';
 import { Channel } from './Channel';
+import { GameSetting } from './GameSetting';
 
 export class Player {
   public readonly id: string;
@@ -34,6 +36,20 @@ export class Player {
       availableChannels: this.availableChannels,
       unavailableChannels: this.unavailableChannels,
     };
+  }
+
+  startGame(gameSetting: GameSetting) {
+    this.gold = gameSetting.startGold;
+    for (let i = 0; i < gameSetting.startNumberOfCards; i++) {
+      const cardType = RandomGenerator.integer(0, CardData.totalTypes);
+      this.cards.push(new Card(cardType));
+    }
+    this.availableChannels = ChannelData.freeChannels.map(
+      c => new Channel(c.order),
+    );
+    this.unavailableChannels = ChannelData.paidChannels.map(
+      c => new Channel(c.order),
+    );
   }
 
   buyChannel(channelId: string) {
