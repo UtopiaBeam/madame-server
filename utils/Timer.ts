@@ -1,10 +1,14 @@
+import { io } from '..';
+
 export class Timer {
   private _interval: NodeJS.Timeout;
+
+  constructor(private readonly _gameId: string) {}
 
   public start(countdown: number) {
     this._interval = setInterval(() => {
       countdown--;
-      // TODO: Emit event
+      io.to(this._gameId).emit('countdown', countdown);
       if (countdown === 0) {
         this.reset();
       }
