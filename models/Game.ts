@@ -7,17 +7,14 @@ import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 
 export class Game {
+  public id: string;
   public round = 0;
 
   private _players: Player[] = [];
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
 
-  constructor(
-    public readonly id: string,
-    creatorId: string,
-    private _setting = new GameSetting(),
-  ) {
+  constructor(creatorId: string, private _setting = new GameSetting()) {
     this.id = RandomGenerator.uuid();
     const creator = PlayerStore.findOne(creatorId);
     this.addPlayer(creator);
