@@ -3,6 +3,7 @@ import { Card } from '../util/card';
 import { Channel, channels } from '../util/channels';
 import { GameState } from '../util/game-state';
 import { Player } from '../util/player';
+import { PlayerState } from '../util/player-state';
 
 @Injectable()
 export class GameService {
@@ -10,6 +11,11 @@ export class GameService {
 
   getGameState(roomId: string): GameState {
     return this.states[roomId];
+  }
+
+  getPlayerState(roomId: string, playerId: string): PlayerState {
+    const gameState = this.states[roomId];
+    return gameState.findPlayer(playerId);
   }
 
   createGameState(roomId: string, player: Player) {

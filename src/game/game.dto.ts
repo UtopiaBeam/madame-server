@@ -1,4 +1,4 @@
-import { ChannelName } from '../util/player-state';
+import { ChannelName } from '../util/channels';
 
 export interface PlaceCardMessage {
   channel: ChannelName;

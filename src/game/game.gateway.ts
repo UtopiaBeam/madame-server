@@ -31,8 +31,7 @@ export class GameGateway {
     @MessageBody() msg: PlaceCardMessage,
     @Room() room: string,
   ) {
-    const gameState = this.service.getGameState(room);
-    const playerState = gameState.findPlayer(client.id);
+    const playerState = this.service.getPlayerState(room, client.id);
     playerState.addChannelCard(msg.channel, msg.cardId, msg.isReal);
   }
 
@@ -42,8 +41,7 @@ export class GameGateway {
     @MessageBody() msg: UnplaceCardMessage,
     @Room() room: string,
   ) {
-    const gameState = this.service.getGameState(room);
-    const playerState = gameState.findPlayer(client.id);
+    const playerState = this.service.getPlayerState(room, client.id);
     playerState.removeChannelCard(msg.channel);
   }
 
@@ -53,8 +51,7 @@ export class GameGateway {
     @MessageBody() msg: BuyChannelMessage,
     @Room() room: string,
   ) {
-    const gameState = this.service.getGameState(room);
-    const playerState = gameState.findPlayer(client.id);
+    const playerState = this.service.getPlayerState(room, client.id);
     playerState.buyChannel(msg.channel);
   }
 

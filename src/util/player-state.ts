@@ -1,14 +1,18 @@
 import { Card, randomCards } from './card';
-import { channels, channelSpeed } from './channels';
+import {
+  Channel,
+  ChannelName,
+  channels,
+  findChannelIndex,
+  getChannel,
+} from './channels';
 import { Player } from './player';
-
-export type ChannelName = keyof typeof channelSpeed;
 
 export class PlayerState extends Player {
   money: number;
   people: number;
-  availableChannels: ChannelName[] = [];
-  unavailableChannels: ChannelName[] = [];
+  availableChannels: Channel[] = [];
+  unavailableChannels: Channel[] = [];
   cards: Card[] = [];
   channelCards: Card[] = [null, null, null, null, null, null, null];
   ready = false;
@@ -17,13 +21,22 @@ export class PlayerState extends Player {
     super(player.id, player.name, player.avatar);
   }
 
-  buyChannel(channel: ChannelName) {
-    if (this.availableChannels.includes(channel)) {
+  hasAvailableChannel(channelName: ChannelName): boolean {
+    return this.availableChannels.some(channel => channel.name === channelName);
+  }
+
+  buyChannel(channelName: ChannelName) {
+    if (this.hasAvailableChannel(channelName)) {
       throw new Error('Channel bought');
     }
 
+    const channel = getChannel(channelName);
+    if (channel.price > this.money) {
+      throw new Error('Not enough money');
+    }
+
     let idx = this.availableChannels.reduce(
-      (acc, c, idx) => (channelSpeed[c] < channelSpeed[channel] ? idx : acc),
+      (acc, c, idx) => (c.order < channel.order ? idx : acc),
       0,
     );
 
@@ -31,7 +44,7 @@ export class PlayerState extends Player {
     idx = this.unavailableChannels.findIndex(c => c === channel);
     this.unavailableChannels.splice(idx, 1);
 
-    // TODO: pay for channel
+    this.money -= channel.price;
   }
 
   findCardIndex(id: string) {
@@ -51,12 +64,8 @@ export class PlayerState extends Player {
     this.cards.splice(idx, 1);
   }
 
-  findChannelIndex(channel: ChannelName) {
-    return channels.findIndex(c => channel === c.name);
-  }
-
   addChannelCard(channel: ChannelName, cardId: string, isReal: boolean) {
-    const channelIdx = this.findChannelIndex(channel);
+    const channelIdx = findChannelIndex(channel);
     if (this.channelCards[channelIdx]) {
       throw new Error('Channel not empty');
     }
@@ -73,7 +82,7 @@ export class PlayerState extends Player {
   }
 
   removeChannelCard(channel: ChannelName) {
-    const channelIdx = this.findChannelIndex(channel);
+    const channelIdx = findChannelIndex(channel);
     if (!this.channelCards[channelIdx]) {
       throw new Error('Channel empty');
     }
@@ -94,12 +103,12 @@ export class PlayerState extends Player {
 
   start() {
     this.cards = randomCards();
-    this.availableChannels = ['ปากต่อปาก', 'เว็บเพจ', 'สิ่งพิมพ์'];
+    this.availableChannels = [channels[1], channels[2], channels[5]];
     this.unavailableChannels = [
-      'โซเชียลมีเดีย',
-      'โทรทัศน์',
-      'วิทยุ',
-      'สื่อนอกบ้าน',
+      channels[0],
+      channels[3],
+      channels[4],
+      channels[6],
     ];
   }
 }
