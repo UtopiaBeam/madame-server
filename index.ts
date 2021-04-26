@@ -1,8 +1,10 @@
 import * as express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
+import router from './routes';
 
 const app = express();
+app.use(router);
 const server = http.createServer(app);
 
 export const io = new Server(server);
