@@ -7,8 +7,8 @@ import { Player } from './Player';
 export class Game {
   public id: string;
   public round = 0;
+  public players: Player[] = [];
 
-  private _players: Player[] = [];
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
 
@@ -26,7 +26,7 @@ export class Game {
   }
 
   private getOpponent(playerId: string): Player {
-    return this._players.find(p => p.id !== playerId);
+    return this.players.find(p => p.id !== playerId);
   }
 
   public getStateForPlayer(playerId: string) {
@@ -42,20 +42,20 @@ export class Game {
   }
 
   public addPlayer(player: Player) {
-    if (this._players.length >= 2) {
+    if (this.players.length >= 2) {
       throw new Error('Room is full');
     }
-    this._players.push(player);
+    this.players.push(player);
   }
 
   public findPlayer(playerId: string): Player {
-    return this._players.find(p => p.id === playerId);
+    return this.players.find(p => p.id === playerId);
   }
 
   public start() {
     this._timer.reset();
     this.round = 1;
-    this._players.forEach(player => {
+    this.players.forEach(player => {
       this._playersPeople[player.id] = this._setting.startPeople;
       player.startGame(this._setting);
     });
