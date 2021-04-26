@@ -10,6 +10,7 @@ export class Player {
   public cards: Card[] = [];
   public availableChannels: Channel[];
   public unavailableChannels: Channel[];
+  public channelSlots: Record<number, Card> = {};
 
   private _gold: number = 500;
 
@@ -38,7 +39,7 @@ export class Player {
     };
   }
 
-  startGame(gameSetting: GameSetting) {
+  public startGame(gameSetting: GameSetting) {
     this.gold = gameSetting.startGold;
     for (let i = 0; i < gameSetting.startNumberOfCards; i++) {
       const cardType = RandomGenerator.integer(0, CardData.totalTypes);
@@ -52,7 +53,12 @@ export class Player {
     );
   }
 
-  buyChannel(channelId: string) {
+  public nextRound(gameSetting: GameSetting) {
+    this.channelSlots = {};
+    this._gold += gameSetting.roundGold;
+  }
+
+  public buyChannel(channelId: string) {
     const idx = this.unavailableChannels.findIndex(ac => ac.id === channelId);
     if (idx < 0) {
       throw new Error('Channel bought');
@@ -65,5 +71,32 @@ export class Player {
     this.availableChannels.sort((c1, c2) => c1.info.order - c2.info.order);
     this.unavailableChannels.splice(idx, 1);
     this._gold -= channel.info.price;
+  }
+
+  public placeCardToChannel(
+    channelType: number,
+    cardId: string,
+    isReal: boolean,
+  ) {
+    const idx = this.cards.findIndex(c => c.id === cardId);
+    if (idx < 0) {
+      throw new Error('Card is not in your hand');
+    }
+    if (this.channelSlots[channelType]) {
+      this.cards.push(this.channelSlots[channelType]);
+    }
+    const card = this.cards.splice(idx, 1)[0];
+    card.isReal = isReal;
+    this.channelSlots[channelType] = card;
+  }
+
+  public unplaceCardFromChannel(channelType: number) {
+    if (!this.channelSlots[channelType]) {
+      throw new Error('No card in this channel');
+    }
+    const card = this.channelSlots[channelType];
+    this.channelSlots[channelType] = undefined;
+    card.isReal = true;
+    this.cards.push(card);
   }
 }
