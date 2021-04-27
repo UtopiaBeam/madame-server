@@ -22,6 +22,7 @@ export class Game {
 
   constructor(public setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
+    this._timer = new Timer(this.id);
   }
 
   public emit(event: string, payload?: unknown) {
