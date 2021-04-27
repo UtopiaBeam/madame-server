@@ -44,7 +44,7 @@ router.post(
     PlayerStore.add(player);
     game.addPlayer(player);
 
-    game.emit('join-room', game.players);
+    game.emit('new-player', game.players);
     res.send({ playerId: player.id });
   },
 );
@@ -124,6 +124,16 @@ router.post('/ready-special-action', (req: Request, res: express.Response) => {
   if (game.everyPlayersReady()) {
     game.startSpecialAction();
     game.emit('start-special-action');
+  }
+});
+
+router.post('/ready-end-round', (req: Request, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  const player = game.findPlayer(req.body.playerId);
+  player.isReady = true;
+  res.send(game.getStateForPlayer(player.id));
+  if (game.everyPlayersReady()) {
+    // TODO
   }
 });
 
