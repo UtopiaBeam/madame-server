@@ -1,6 +1,7 @@
 import * as express from 'express';
 
-export interface Request<Query extends {}, Body = {}> extends express.Request {
+export interface Request<Query extends {} = {}, Body = {}>
+  extends express.Request {
   query: Query;
   body: Body & { gameId: string; playerId: string };
 }

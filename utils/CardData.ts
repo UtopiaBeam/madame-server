@@ -3,8 +3,17 @@ export enum EffectType {
   Attack = 'attack',
 }
 
+export interface CardDetail {
+  name: string;
+  audioFactor: number;
+  visualFactor: number;
+  textFactor: number;
+  cost: number;
+  effectType: EffectType;
+}
+
 export class CardData {
-  public static cards = {
+  public static cards: Record<number, CardDetail> = {
     0: {
       name: 'แนะนำตัวต่อสาธารณะชน',
       audioFactor: 1,

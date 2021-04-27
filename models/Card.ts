@@ -8,7 +8,7 @@ export class Card {
     this.id = RandomGenerator.uuid();
   }
 
-  public getCardInfo() {
+  public get info() {
     const cardInfo = CardData.getCard(this.cardType);
     return { id: this.id, ...cardInfo };
   }

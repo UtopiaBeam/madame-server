@@ -1,4 +1,6 @@
 import { PlayerStore } from '../stores/PlayerStore';
+import { EffectType } from '../utils/CardData';
+import { ChannelData } from '../utils/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
 import { GameSetting } from './GameSetting';
@@ -18,10 +20,13 @@ export class Game {
     this.addPlayer(creator);
   }
 
-  private getNeutralPeople(): number {
+  private getNeutralPeople(people?: Record<string, number>): number {
     return (
       this._setting.totalPeople -
-      Object.values(this._playersPeople).reduce((acc, p) => acc + p, 0)
+      Object.values(people ?? this._playersPeople).reduce(
+        (acc, p) => acc + p,
+        0,
+      )
     );
   }
 
@@ -73,5 +78,55 @@ export class Game {
     } else {
       this.round++;
     }
+  }
+
+  public everyPlayersReady(): boolean {
+    return this.players.every(p => p.isReady);
+  }
+
+  public resetPlayersReady() {
+    this.players.forEach(p => {
+      p.isReady = false;
+    });
+  }
+
+  public battle() {
+    const playerPeople = { ...this._playersPeople };
+    const peopleStates: Record<string, number>[] = [];
+
+    for (const channel of ChannelData.channels) {
+      const affectedPeople = this.players.map(player => {
+        const opponent = this.getOpponent(player.id);
+        const card = player.channelSlots[channel.order].info;
+        // Limit maximum percentage to 50%
+        const factor = Math.min(
+          0.5,
+          channel.audio * card.audioFactor +
+            channel.visual * card.visualFactor +
+            channel.text * card.textFactor,
+        );
+
+        return Math.floor(
+          factor *
+            (card.effectType === EffectType.PR
+              ? this.getNeutralPeople(playerPeople)
+              : playerPeople[opponent.id]),
+        );
+      });
+
+      this.players.forEach((player, idx) => {
+        const opponent = this.getOpponent(player.id);
+        const card = player.channelSlots[channel.order].info;
+        if (card.effectType === EffectType.PR) {
+          playerPeople[player.id] += affectedPeople[idx];
+        } else {
+          playerPeople[opponent.id] -= affectedPeople[idx];
+        }
+      });
+
+      peopleStates.push(playerPeople);
+    }
+
+    return peopleStates;
   }
 }

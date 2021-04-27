@@ -11,6 +11,7 @@ export class Player {
   public availableChannels: Channel[];
   public unavailableChannels: Channel[];
   public channelSlots: Record<number, Card> = {};
+  public isReady: boolean = false;
 
   private _gold: number = 500;
 
