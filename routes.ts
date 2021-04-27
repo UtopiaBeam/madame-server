@@ -142,7 +142,7 @@ router.post('/ready-end-round', (req: Request, res: express.Response) => {
   player.isReady = true;
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
-    // TODO
+    game.emit('end-round');
   }
 });
 
