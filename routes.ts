@@ -40,7 +40,7 @@ router.post(
     PlayerStore.add(player);
     game.addPlayer(player);
 
-    io.to(req.body.gameId).emit('join-room', game.players);
+    game.emit('join-room', game.players);
     res.send({ playerId: player.id });
   },
 );
@@ -50,8 +50,9 @@ router.post(
   (req: Request<{}, StartGameBody>, res: express.Response) => {
     const game = GameStore.findOne(req.body.gameId);
     if (game.players.length === 2) {
+      game.start();
       res.sendStatus(201);
-      io.to(req.body.gameId).emit('start-game');
+      game.emit('start-game');
     } else {
       res.status(400).send({ error: 'Room is not full' });
     }
