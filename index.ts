@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import router from './routes';
 
 const app = express();
+app.use(express.json());
 app.use(router);
 const server = http.createServer(app);
 
