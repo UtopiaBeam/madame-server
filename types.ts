@@ -21,10 +21,6 @@ export interface JoinRoomBody {
   avatar: string;
 }
 
-export interface StartGameBody {
-  gameId: string;
-}
-
 export interface BuyChannelBody {
   channelId: string;
 }
