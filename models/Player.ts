@@ -56,10 +56,14 @@ export class Player {
       const cardType = RandomGenerator.integer(0, CardData.totalTypes);
       this.cards.push(new Card(cardType));
     }
-    this.availableChannels = ChannelData.freeChannels.map(
-      c => new Channel(c.channelType),
-    );
-    this.unavailableChannels = ChannelData.paidChannels.map(
+    // TODO: Wait frontend to finish
+    // this.availableChannels = ChannelData.freeChannels.map(
+    //   c => new Channel(c.channelType),
+    // );
+    // this.unavailableChannels = ChannelData.paidChannels.map(
+    //   c => new Channel(c.channelType),
+    // );
+    this.availableChannels = ChannelData.channels.map(
       c => new Channel(c.channelType),
     );
   }
