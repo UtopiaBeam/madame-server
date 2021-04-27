@@ -35,6 +35,8 @@ export class Player {
   get info() {
     return {
       id: this.id,
+      name: this.name,
+      avatar: this.avatar,
       gold: this._gold,
       cards: this.cards.map(c => c.info),
       availableChannels: this.availableChannels.map(c => c.info),
