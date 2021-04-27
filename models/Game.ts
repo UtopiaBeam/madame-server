@@ -192,7 +192,7 @@ export class Game {
         }
       });
 
-      peopleStates.push(playerPeople);
+      peopleStates.push({ ...playerPeople });
     }
 
     this.resetPlayersReady();
