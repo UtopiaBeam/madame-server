@@ -8,6 +8,16 @@ export enum ChannelName {
   Billboard = 'สื่อนอกบ้าน',
 }
 
+export interface ChannelDetail {
+  name: ChannelName;
+  audio: number;
+  visual: number;
+  text: number;
+  price: number;
+  channelType: number;
+  baseFactor: number;
+}
+
 export class ChannelData {
   public static channels = [
     {
@@ -16,7 +26,8 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 500,
-      order: 0,
+      channelType: 0,
+      baseFactor: 0.2,
     },
     {
       name: ChannelName.Gossip,
@@ -24,7 +35,8 @@ export class ChannelData {
       visual: 0,
       text: 0,
       price: 0,
-      order: 1,
+      channelType: 1,
+      baseFactor: 0.03,
     },
     {
       name: ChannelName.Webpage,
@@ -32,7 +44,8 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 0,
-      order: 2,
+      channelType: 2,
+      baseFactor: 0.05,
     },
     {
       name: ChannelName.Television,
@@ -40,7 +53,8 @@ export class ChannelData {
       visual: 1,
       text: 0,
       price: 300,
-      order: 3,
+      channelType: 3,
+      baseFactor: 0.12,
     },
     {
       name: ChannelName.Radio,
@@ -48,7 +62,8 @@ export class ChannelData {
       visual: 0,
       text: 0,
       price: 150,
-      order: 4,
+      channelType: 4,
+      baseFactor: 0.05,
     },
     {
       name: ChannelName.Print,
@@ -56,7 +71,8 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 0,
-      order: 5,
+      channelType: 5,
+      baseFactor: 0.08,
     },
     {
       name: ChannelName.Billboard,
@@ -64,7 +80,8 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 250,
-      order: 6,
+      channelType: 6,
+      baseFactor: 0.1,
     },
   ];
 

@@ -138,13 +138,14 @@ export class Game {
     for (const channel of ChannelData.channels) {
       const affectedPeople = this.players.map(player => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.order].info;
+        const card = player.channelSlots[channel.channelType].info;
         // Limit maximum percentage to 50%
         const factor = Math.min(
           0.5,
           channel.audio * card.audioFactor +
             channel.visual * card.visualFactor +
-            channel.text * card.textFactor,
+            channel.text * card.textFactor +
+            channel.baseFactor,
         );
 
         return Math.floor(
@@ -157,7 +158,7 @@ export class Game {
 
       this.players.forEach((player, idx) => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.order].info;
+        const card = player.channelSlots[channel.channelType].info;
         if (card.effectType === EffectType.PR) {
           playerPeople[player.id] += affectedPeople[idx];
         } else {

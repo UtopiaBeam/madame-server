@@ -47,10 +47,10 @@ export class Player {
       this.cards.push(new Card(cardType));
     }
     this.availableChannels = ChannelData.freeChannels.map(
-      c => new Channel(c.order),
+      c => new Channel(c.channelType),
     );
     this.unavailableChannels = ChannelData.paidChannels.map(
-      c => new Channel(c.order),
+      c => new Channel(c.channelType),
     );
   }
 
@@ -69,7 +69,9 @@ export class Player {
       throw new Error('Not enough gold');
     }
     this.availableChannels.push(channel);
-    this.availableChannels.sort((c1, c2) => c1.info.order - c2.info.order);
+    this.availableChannels.sort(
+      (c1, c2) => c1.info.channelType - c2.info.channelType,
+    );
     this.unavailableChannels.splice(idx, 1);
     this._gold -= channel.info.price;
   }
