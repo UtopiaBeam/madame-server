@@ -31,6 +31,11 @@ router.post(
   },
 );
 
+router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
+  const game = GameStore.findOne(req.query.gameId);
+  res.send(game.getStateForPlayer(req.query.playerId));
+});
+
 router.post(
   '/join-room',
   (req: Request<{}, JoinRoomBody>, res: express.Response) => {
@@ -58,11 +63,6 @@ router.post(
     }
   },
 );
-
-router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
-  const game = GameStore.findOne(req.query.gameId);
-  res.send(game.getStateForPlayer(req.query.playerId));
-});
 
 router.post(
   '/buy-channel',
