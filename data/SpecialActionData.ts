@@ -17,7 +17,7 @@ export class SpecialActionData {
     { type: 2, name: SpecialAction.Spy, cost: 50 },
   ];
 
-  public static getSpecialAction(type: number) {
+  public static getSpecialAction(type: number): SpecialActionDetail {
     return this.getSpecialAction[type];
   }
 }

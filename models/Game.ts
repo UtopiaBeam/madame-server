@@ -8,6 +8,7 @@ import { Timer } from '../utils/Timer';
 import { Card } from './Card';
 import { GameSetting } from './GameSetting';
 import { Player } from './Player';
+import { SpecialAction, SpecialActionData } from '../data/SpecialActionData';
 
 export class Game {
   public id: string;
@@ -16,6 +17,8 @@ export class Game {
 
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
+  private _affectedPeople: Record<string, number> = {};
+  private _exposedCards: Record<string, Card[]> = {};
 
   constructor(creatorId: string, private _setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
@@ -79,6 +82,7 @@ export class Game {
     this.round = 1;
     this.players.forEach(player => {
       this._playersPeople[player.id] = this._setting.startPeople;
+      this._exposedCards[player.id] = [];
       player.startGame(this._setting);
     });
     this._timer.start(this._setting.roundTime);
@@ -98,7 +102,10 @@ export class Game {
       this.players.forEach(p => {
         p.channelSlots = {};
         p.gold += this._playersPeople[p.id];
+        p.usedActionType = undefined;
       });
+      this._affectedPeople = {};
+      this._exposedCards = {};
       this.emit('next-round');
     }
   }
@@ -147,7 +154,7 @@ export class Game {
   }
 
   public battle() {
-    const playerPeople = { ...this._playersPeople };
+    const playerPeople = this._playersPeople;
     const peopleStates: Record<string, number>[] = [];
 
     for (const channel of ChannelData.channels) {
@@ -176,8 +183,10 @@ export class Game {
         const card = player.channelSlots[channel.channelType].info;
         if (card.effectType === EffectType.PR) {
           playerPeople[player.id] += affectedPeople[idx];
+          this._affectedPeople[player.id] = affectedPeople[idx];
         } else {
           playerPeople[opponent.id] -= affectedPeople[idx];
+          this._affectedPeople[opponent.id] = affectedPeople[idx];
         }
       });
 
@@ -187,5 +196,57 @@ export class Game {
     this.resetPlayersReady();
 
     return peopleStates;
+  }
+
+  public handleSpecialAction(
+    actionType: number,
+    playerId: string,
+    cardId?: string,
+  ) {
+    const action = SpecialActionData.getSpecialAction(actionType);
+    const player = this.findPlayer(playerId);
+
+    if (player.usedActionType && player.usedActionType !== actionType) {
+      throw new Error('Cannot do different action');
+    }
+    if (player.usedActionType === 2) {
+      throw new Error('Can only spy once');
+    }
+    if (action.cost > player.gold) {
+      throw new Error('Not enough money');
+    }
+
+    player.gold -= action.cost;
+    player.usedActionType = actionType;
+
+    const opponent = this.getOpponent(playerId);
+    const card = Object.values(opponent.channelSlots).find(
+      c => c.id === cardId,
+    );
+    switch (action.name) {
+      // Investigate a card, if fake cancel the effect
+      case SpecialAction.Investigate:
+        if (!card.isReal) {
+          this._exposedCards[opponent.id].push(card);
+          if (card.info.effectType === EffectType.PR) {
+            this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
+          } else {
+            this._playersPeople[player.id] += this._affectedPeople[card.id];
+          }
+          this._affectedPeople = undefined;
+        }
+      // Expose a card, if fake apply the change to player
+      case SpecialAction.Expose:
+        if (!card.isReal) {
+          this._exposedCards[opponent.id].push(card);
+          this._playersPeople[player.id] += this._affectedPeople[card.id];
+          this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
+          this._affectedPeople = undefined;
+        }
+        break;
+      // Reveal opponent's cards
+      case SpecialAction.Spy:
+        break;
+    }
   }
 }

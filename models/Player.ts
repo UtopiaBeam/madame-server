@@ -1,5 +1,6 @@
 import { CardData } from '../data/CardData';
 import { ChannelData } from '../data/ChannelData';
+import { SpecialAction, SpecialActionData } from '../data/SpecialActionData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Card } from './Card';
 import { Channel } from './Channel';
@@ -12,6 +13,7 @@ export class Player {
   public unavailableChannels: Channel[];
   public channelSlots: Record<number, Card> = {};
   public isReady: boolean = false;
+  public usedActionType: number;
 
   private _gold: number = 500;
 
