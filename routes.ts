@@ -7,6 +7,7 @@ import { PlayerStore } from './stores/PlayerStore';
 import {
   BuyChannelBody,
   CreateRoomBody,
+  GameSettingQuery,
   JoinRoomBody,
   PlaceCardBody,
   Request,
@@ -21,6 +22,14 @@ router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
   const game = GameStore.findOne(req.query.gameId);
   res.send(game.getStateForPlayer(req.query.playerId));
 });
+
+router.get(
+  '/setting',
+  (req: Request<GameSettingQuery>, res: express.Response) => {
+    const game = GameStore.findOne(req.query.gameId);
+    res.send(game.setting);
+  },
+);
 
 router.post(
   '/create-room',

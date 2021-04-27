@@ -11,6 +11,10 @@ export interface StateQuery {
   playerId: string;
 }
 
+export interface GameSettingQuery {
+  gameId: string;
+}
+
 export interface CreateRoomBody {
   name: string;
   avatar: string;

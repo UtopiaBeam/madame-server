@@ -20,7 +20,7 @@ export class Game {
   private _affectedPeople: Record<string, number> = {};
   private _exposedCards: Record<string, Card[]> = {};
 
-  constructor(creatorId: string, private _setting = new GameSetting()) {
+  constructor(creatorId: string, public setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
     const creator = PlayerStore.findOne(creatorId);
     this.addPlayer(creator);
@@ -32,7 +32,7 @@ export class Game {
 
   private getNeutralPeople(people?: Record<string, number>): number {
     return (
-      this._setting.totalPeople -
+      this.setting.totalPeople -
       Object.values(people ?? this._playersPeople).reduce(
         (acc, p) => acc + p,
         0,
@@ -81,21 +81,21 @@ export class Game {
     this._timer.reset();
     this.round = 1;
     this.players.forEach(player => {
-      this._playersPeople[player.id] = this._setting.startPeople;
+      this._playersPeople[player.id] = this.setting.startPeople;
       this._exposedCards[player.id] = [];
-      player.startGame(this._setting);
+      player.startGame(this.setting);
     });
-    this._timer.start(this._setting.roundTime);
+    this._timer.start(this.setting.roundTime);
   }
 
   public startSpecialAction() {
     this._timer.reset();
     this.resetPlayersReady();
-    this._timer.start(this._setting.specialActionTime);
+    this._timer.start(this.setting.specialActionTime);
   }
 
   public nextRound() {
-    if (this.round === this._setting.numberOfRound) {
+    if (this.round === this.setting.numberOfRound) {
       this.end();
     } else {
       this.round++;
@@ -112,7 +112,7 @@ export class Game {
 
   public dealCards() {
     const cards = [];
-    for (let i = 0; i < this._setting.roundDealCards; i++) {
+    for (let i = 0; i < this.setting.roundDealCards; i++) {
       const cardType = RandomGenerator.cardType();
       const card = new Card(cardType);
       cards.push(card.info);
@@ -122,7 +122,7 @@ export class Game {
   }
 
   public selectCards(playerId: string, cardTypes: number[]) {
-    if (cardTypes.length !== this._setting.roundSelectCards) {
+    if (cardTypes.length !== this.setting.roundSelectCards) {
       throw new Error('Invalid number of selected cards');
     }
     const player = this.findPlayer(playerId);
