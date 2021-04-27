@@ -64,21 +64,29 @@ export class Player {
     );
   }
 
-  public buyChannel(channelId: string) {
-    const idx = this.unavailableChannels.findIndex(ac => ac.id === channelId);
-    if (idx < 0) {
+  public buyChannels(channelIds: string[]) {
+    const indices = channelIds.map(channelId =>
+      this.unavailableChannels.findIndex(ac => ac.id === channelId),
+    );
+    if (indices.some(idx => idx < 0)) {
       throw new Error('Channel bought');
     }
-    const channel = this.unavailableChannels[idx];
-    if (channel.info.price > this._gold) {
+    const totalPrice = indices.reduce(
+      (acc, idx) => acc + this.unavailableChannels[idx].info.price,
+      0,
+    );
+    if (totalPrice > this._gold) {
       throw new Error('Not enough gold');
     }
-    this.availableChannels.push(channel);
+    this._gold -= totalPrice;
+    indices.forEach(idx => {
+      const channel = this.unavailableChannels[idx];
+      this.availableChannels.push(channel);
+      this.unavailableChannels.splice(idx, 1);
+    });
     this.availableChannels.sort(
       (c1, c2) => c1.info.channelType - c2.info.channelType,
     );
-    this.unavailableChannels.splice(idx, 1);
-    this._gold -= channel.info.price;
   }
 
   public placeCardToChannel(

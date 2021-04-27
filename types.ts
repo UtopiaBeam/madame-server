@@ -26,7 +26,7 @@ export interface JoinRoomBody {
 }
 
 export interface BuyChannelBody {
-  channelId: string;
+  channelIds: string[];
 }
 
 export interface PlaceCardBody {
