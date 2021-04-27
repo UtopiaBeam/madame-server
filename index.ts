@@ -10,6 +10,11 @@ app.use(cors());
 app.use(router);
 const server = http.createServer(app);
 
-export const io = new Server(server);
+export const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 server.listen(3000, () => console.log('🚀 Listening on http://localhost:3000'));

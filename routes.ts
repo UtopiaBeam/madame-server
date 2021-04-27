@@ -44,7 +44,6 @@ router.post(
     PlayerStore.add(player);
     game.addPlayer(player);
 
-    game.emit('new-player', game.players);
     res.send({ playerId: player.id });
   },
 );
