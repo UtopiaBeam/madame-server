@@ -54,11 +54,6 @@ export class Player {
     );
   }
 
-  public nextRound(gameSetting: GameSetting) {
-    this.channelSlots = {};
-    this._gold += gameSetting.roundGold;
-  }
-
   public buyChannel(channelId: string) {
     const idx = this.unavailableChannels.findIndex(ac => ac.id === channelId);
     if (idx < 0) {

@@ -84,6 +84,10 @@ export class Game {
       this.end();
     } else {
       this.round++;
+      this.players.forEach(p => {
+        p.channelSlots = {};
+        p.gold += this._playersPeople[p.id];
+      });
       this.emit('next-round');
     }
   }

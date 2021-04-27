@@ -7,7 +7,6 @@ export class GameSetting {
     private _startPeople = 200,
     private _roundDealCards = 5,
     private _roundSelectCards = 3,
-    private _roundGold = 100,
     private _roundTime = 120,
     private _specialActionTime = 30,
   ) {}
@@ -42,10 +41,6 @@ export class GameSetting {
 
   get roundTime(): number {
     return this._roundTime;
-  }
-
-  get roundGold(): number {
-    return this._roundGold;
   }
 
   get specialActionTime(): number {
