@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { CardData } from './CardData';
+import { CardData } from '../data/CardData';
 
 export class RandomGenerator {
   public static integer(min: number, max: number): number {

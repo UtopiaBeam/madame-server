@@ -1,4 +1,4 @@
-import { ChannelData } from '../utils/ChannelData';
+import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 
 export class Channel {

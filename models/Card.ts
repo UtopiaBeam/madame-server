@@ -1,5 +1,5 @@
 import { RandomGenerator } from '../utils/RandomGenerator';
-import { CardData } from '../utils/CardData';
+import { CardData } from '../data/CardData';
 
 export class Card {
   public id: string;

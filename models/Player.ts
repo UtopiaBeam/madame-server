@@ -1,5 +1,5 @@
-import { CardData } from '../utils/CardData';
-import { ChannelData } from '../utils/ChannelData';
+import { CardData } from '../data/CardData';
+import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Card } from './Card';
 import { Channel } from './Channel';

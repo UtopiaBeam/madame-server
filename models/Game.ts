@@ -1,8 +1,8 @@
 import { io } from '..';
 import { GameStore } from '../stores/GameStore';
 import { PlayerStore } from '../stores/PlayerStore';
-import { EffectType } from '../utils/CardData';
-import { ChannelData } from '../utils/ChannelData';
+import { EffectType } from '../data/CardData';
+import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
 import { Card } from './Card';
