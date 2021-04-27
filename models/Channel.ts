@@ -10,6 +10,6 @@ export class Channel {
 
   public get info() {
     const channel = ChannelData.getChannel(this.channelType);
-    return { id: this.id, ...channel };
+    return { id: this.id, type: this.channelType, ...channel };
   }
 }

@@ -34,9 +34,15 @@ export class Player {
     return {
       id: this.id,
       gold: this._gold,
-      cards: this.cards,
-      availableChannels: this.availableChannels,
-      unavailableChannels: this.unavailableChannels,
+      cards: this.cards.map(c => c.info),
+      availableChannels: this.availableChannels.map(c => c.info),
+      unavailableChannels: this.unavailableChannels.map(c => c.info),
+      channelSlots: Object.entries(this.channelSlots).reduce<
+        Record<number, any>
+      >(
+        (acc, [type, card]) => ({ ...acc, ...(card && { [type]: card.info }) }),
+        {},
+      ),
     };
   }
 

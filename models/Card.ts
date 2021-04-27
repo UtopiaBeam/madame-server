@@ -10,6 +10,6 @@ export class Card {
 
   public get info() {
     const cardInfo = CardData.getCard(this.cardType);
-    return { id: this.id, ...cardInfo };
+    return { id: this.id, type: this.cardType, ...cardInfo };
   }
 }
