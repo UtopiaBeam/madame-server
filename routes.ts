@@ -116,7 +116,18 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
     const result = game.battle();
-    io.to(req.body.gameId).emit('battle-result', result);
+    game.emit('battle-result', result);
+  }
+});
+
+router.post('/ready-special-action', (req: Request, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  const player = game.findPlayer(req.body.playerId);
+  player.isReady = true;
+  res.send(game.getStateForPlayer(player.id));
+  if (game.everyPlayersReady()) {
+    game.startSpecialAction();
+    game.emit('start-special-action');
   }
 });
 
