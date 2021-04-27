@@ -76,6 +76,7 @@ export class Game {
 
   public startSpecialAction() {
     this._timer.reset();
+    this.resetPlayersReady();
     this._timer.start(this._setting.specialActionTime);
   }
 
@@ -173,10 +174,7 @@ export class Game {
       peopleStates.push(playerPeople);
     }
 
-    // Reset ready
-    this.players.forEach(p => {
-      p.isReady = false;
-    });
+    this.resetPlayersReady();
 
     return peopleStates;
   }
