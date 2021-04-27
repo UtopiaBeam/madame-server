@@ -23,7 +23,7 @@ export class Game {
     this.addPlayer(creator);
   }
 
-  private emit(event: string, payload?: unknown) {
+  public emit(event: string, payload?: unknown) {
     io.to(this.id).emit(event, payload);
   }
 
@@ -168,6 +168,11 @@ export class Game {
 
       peopleStates.push(playerPeople);
     }
+
+    // Reset ready
+    this.players.forEach(p => {
+      p.isReady = false;
+    });
 
     return peopleStates;
   }
