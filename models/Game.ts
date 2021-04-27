@@ -41,6 +41,16 @@ export class Game {
     return this.players.find(p => p.id !== playerId);
   }
 
+  public get state() {
+    return {
+      id: this.id,
+      round: this.round,
+      players: this.players.map(p => p.info),
+      neutral: this.getNeutralPeople(),
+      playerPeople: this._playersPeople,
+    };
+  }
+
   public getStateForPlayer(playerId: string) {
     const player = this.findPlayer(playerId);
     return {
