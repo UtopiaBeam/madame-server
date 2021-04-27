@@ -11,12 +11,16 @@ import {
   PlaceCardBody,
   Request,
   SelectCardsBody,
-  StartGameBody,
   StateQuery,
   UnplaceCardBody,
 } from './types';
 
 const router = express.Router();
+
+router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
+  const game = GameStore.findOne(req.query.gameId);
+  res.send(game.getStateForPlayer(req.query.playerId));
+});
 
 router.post(
   '/create-room',
@@ -30,11 +34,6 @@ router.post(
     res.send({ gameId: game.id, playerId: player.id });
   },
 );
-
-router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
-  const game = GameStore.findOne(req.query.gameId);
-  res.send(game.getStateForPlayer(req.query.playerId));
-});
 
 router.post(
   '/join-room',
@@ -50,19 +49,16 @@ router.post(
   },
 );
 
-router.post(
-  '/start-game',
-  (req: Request<{}, StartGameBody>, res: express.Response) => {
-    const game = GameStore.findOne(req.body.gameId);
-    if (game.players.length === 2) {
-      game.start();
-      res.sendStatus(201);
-      game.emit('start-game');
-    } else {
-      res.status(400).send({ error: 'Room is not full' });
-    }
-  },
-);
+router.post('/start-game', (req: Request<{}, {}>, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  if (game.players.length === 2) {
+    game.start();
+    res.sendStatus(201);
+    game.emit('start-game');
+  } else {
+    res.status(400).send({ error: 'Room is not full' });
+  }
+});
 
 router.post(
   '/buy-channel',
@@ -116,7 +112,7 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
     const result = game.battle();
-    game.emit('battle-result', result);
+    game.emit('battle-result', { result, state: game.state });
   }
 });
 
