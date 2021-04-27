@@ -35,10 +35,11 @@ router.post(
   '/create-room',
   (req: Request<{}, CreateRoomBody>, res: express.Response) => {
     const player = new Player(req.body.name, req.body.avatar);
-    const game = new Game(player.id);
+    const game = new Game();
 
     PlayerStore.add(player);
     GameStore.add(game);
+    game.addPlayer(player);
 
     res.send({ gameId: game.id, playerId: player.id });
   },

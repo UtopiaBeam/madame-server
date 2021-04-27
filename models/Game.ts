@@ -20,10 +20,8 @@ export class Game {
   private _affectedPeople: Record<string, number> = {};
   private _exposedCards: Record<string, Card[]> = {};
 
-  constructor(creatorId: string, public setting = new GameSetting()) {
+  constructor(public setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
-    const creator = PlayerStore.findOne(creatorId);
-    this.addPlayer(creator);
   }
 
   public emit(event: string, payload?: unknown) {
@@ -56,13 +54,16 @@ export class Game {
 
   public getStateForPlayer(playerId: string) {
     const player = this.findPlayer(playerId);
+    const opponent = this.getOpponent(playerId);
     return {
       id: this.id,
       round: this.round,
       ...player.info,
-      people: this._playersPeople[playerId],
-      neutral: this.getNeutralPeople(),
-      opponent: this._playersPeople[this.getOpponent(playerId).id],
+      ...(opponent && {
+        people: this._playersPeople[playerId],
+        neutral: this.getNeutralPeople(),
+        opponent: this._playersPeople[opponent.id],
+      }),
     };
   }
 

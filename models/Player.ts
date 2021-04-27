@@ -9,8 +9,8 @@ import { GameSetting } from './GameSetting';
 export class Player {
   public readonly id: string;
   public cards: Card[] = [];
-  public availableChannels: Channel[];
-  public unavailableChannels: Channel[];
+  public availableChannels: Channel[] = [];
+  public unavailableChannels: Channel[] = [];
   public channelSlots: Record<number, Card> = {};
   public isReady: boolean = false;
   public usedActionType: number;

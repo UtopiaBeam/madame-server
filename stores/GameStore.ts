@@ -1,18 +1,18 @@
 import { Game } from '../models/Game';
 
 export class GameStore {
-  private static _games: Game[] = [];
+  public static games: Game[] = [];
 
   public static findOne(gameId: string): Game {
-    return this._games.find(g => g.id === gameId);
+    return this.games.find(g => g.id === gameId);
   }
 
   public static add(game: Game) {
-    this._games.push(game);
+    this.games.push(game);
   }
 
   public static remove(gameId: string) {
-    const idx = this._games.findIndex(g => g.id === gameId);
-    this._games.splice(idx, 1);
+    const idx = this.games.findIndex(g => g.id === gameId);
+    this.games.splice(idx, 1);
   }
 }
