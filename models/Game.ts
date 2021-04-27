@@ -5,6 +5,7 @@ import { EffectType } from '../utils/CardData';
 import { ChannelData } from '../utils/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
+import { Card } from './Card';
 import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 
@@ -17,9 +18,13 @@ export class Game {
   private _playersPeople: Record<string, number> = {};
 
   constructor(creatorId: string, private _setting = new GameSetting()) {
-    this.id = RandomGenerator.uuid();
+    this.id = RandomGenerator.gameId();
     const creator = PlayerStore.findOne(creatorId);
     this.addPlayer(creator);
+  }
+
+  private emit(event: string, payload?: unknown) {
+    io.to(this.id).emit(event, payload);
   }
 
   private getNeutralPeople(people?: Record<string, number>): number {
@@ -79,16 +84,35 @@ export class Game {
       this.end();
     } else {
       this.round++;
+      this.emit('next-round');
     }
+  }
+
+  public dealCards() {
+    const cards = [];
+    for (let i = 0; i < this._setting.roundDealCards; i++) {
+      const cardType = RandomGenerator.cardType();
+      const card = new Card(cardType);
+      cards.push(card.info);
+    }
+
+    return cards;
+  }
+
+  public selectCards(playerId: string, cardTypes: number[]) {
+    if (cardTypes.length !== this._setting.roundSelectCards) {
+      throw new Error('Invalid number of selected cards');
+    }
+    const player = this.findPlayer(playerId);
+    const cards = cardTypes.map(ct => new Card(ct));
+    player.cards.push(...cards);
   }
 
   private end() {
     const summary = Object.entries(this._playersPeople);
     const winnerId =
       summary[0][1] > summary[1][1] ? summary[0][0] : summary[1][0];
-    io.to(this.id).emit('end-game', {
-      winner: this.findPlayer(winnerId),
-    });
+    this.emit('end-game', { winner: this.findPlayer(winnerId) });
 
     // Clean up
     GameStore.remove(this.id);

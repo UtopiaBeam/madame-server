@@ -10,6 +10,7 @@ import {
   JoinRoomBody,
   PlaceCardBody,
   Request,
+  SelectCardsBody,
   StartGameBody,
   StateQuery,
   UnplaceCardBody,
@@ -117,5 +118,23 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
     io.to(req.body.gameId).emit('battle-result', result);
   }
 });
+
+router.post('/deal-cards', (req: Request, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  res.send(game.dealCards());
+});
+
+router.post(
+  '/select-cards',
+  (req: Request<{}, SelectCardsBody>, res: express.Response) => {
+    try {
+      const game = GameStore.findOne(req.body.gameId);
+      game.selectCards(req.body.playerId, req.body.cardTypes);
+      res.send(game.getStateForPlayer(req.body.playerId));
+    } catch (error) {
+      res.status(400).send({ error });
+    }
+  },
+);
 
 export default router;

@@ -38,3 +38,7 @@ export interface PlaceCardBody {
 export interface UnplaceCardBody {
   channelType: number;
 }
+
+export interface SelectCardsBody {
+  cardTypes: number[];
+}
