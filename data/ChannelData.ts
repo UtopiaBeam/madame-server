@@ -19,7 +19,7 @@ export interface ChannelDetail {
 }
 
 export class ChannelData {
-  public static channels = [
+  private static _channels = [
     {
       name: ChannelName.Social,
       audio: 1,
@@ -84,6 +84,10 @@ export class ChannelData {
       baseFactor: 0.1,
     },
   ];
+
+  public static get channels() {
+    return this._channels.map((c, idx) => ({ type: idx, ...c }));
+  }
 
   public static getChannel(channelType: number) {
     return this.channels[channelType];
