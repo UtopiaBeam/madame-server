@@ -39,6 +39,7 @@ export class Player {
       avatar: this.avatar,
       gold: this._gold,
       cards: this.cards.map(c => c.info),
+      isReady: this.isReady,
       availableChannels: this.availableChannels.map(c => c.info),
       unavailableChannels: this.unavailableChannels.map(c => c.info),
       channelSlots: Object.entries(this.channelSlots).reduce<

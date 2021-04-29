@@ -162,7 +162,10 @@ export class Game {
     for (const channel of ChannelData.channels) {
       const affectedPeople = this.players.map(player => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.channelType].info;
+        const card = player.channelSlots[channel.channelType]?.info;
+        if (!card) {
+          return 0;
+        }
         // Limit maximum percentage to 50%
         const factor = Math.min(
           0.5,
@@ -182,7 +185,10 @@ export class Game {
 
       this.players.forEach((player, idx) => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.channelType].info;
+        const card = player.channelSlots[channel.channelType]?.info;
+        if (!card) {
+          return;
+        }
         if (card.effectType === EffectType.PR) {
           playerPeople[player.id] += affectedPeople[idx];
           this._affectedPeople[player.id] = affectedPeople[idx];
