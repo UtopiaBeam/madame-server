@@ -254,7 +254,7 @@ export class Game {
         break;
       // Reveal opponent's cards
       case SpecialAction.Spy:
-        break;
+        this._exposedCards[opponent.id] = opponent.cards;
     }
   }
 }
