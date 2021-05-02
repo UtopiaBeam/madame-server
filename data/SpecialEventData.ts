@@ -1,4 +1,4 @@
-export interface SpecialEventDetail {
+export interface SpecialEvent {
   name: string;
   description: string;
   channelEffect: number[];
@@ -11,7 +11,7 @@ export interface SpecialEventDetail {
 }
 
 export class SpecialEventData {
-  public static events: SpecialEventDetail[] = [
+  public static events: SpecialEvent[] = [
     {
       name: 'กองเซนเซอร์ลง',
       description: 'สื่อทุกสื่อได้รับการตรวจสอบ ไม่สามารถใช้การ์ด Fake ได้',

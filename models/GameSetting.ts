@@ -5,6 +5,7 @@ export class GameSetting {
     private _startGold = 500,
     private _startNumberOfCards = 5,
     private _startPeople = 200,
+    private _eventRound = 4,
     private _roundDealCards = 5,
     private _roundSelectCards = 3,
     private _roundTime = 120,
@@ -29,6 +30,10 @@ export class GameSetting {
 
   get startPeople(): number {
     return this._startPeople;
+  }
+
+  get eventRound(): number {
+    return this._eventRound;
   }
 
   get roundDealCards(): number {

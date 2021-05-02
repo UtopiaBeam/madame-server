@@ -89,6 +89,9 @@ router.post(
     try {
       const game = GameStore.findOne(req.body.gameId);
       const player = game.findPlayer(req.body.playerId);
+      if (!game.event.cardEffect.allowFake && !req.body.isReal) {
+        throw new Error('Fake card is not allowed this round');
+      }
       player.placeCardToChannel(
         req.body.channelType,
         req.body.cardId,

@@ -9,11 +9,13 @@ import { Card } from './Card';
 import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 import { SpecialAction, SpecialActionData } from '../data/SpecialActionData';
+import { SpecialEvent } from '../data/SpecialEventData';
 
 export class Game {
   public id: string;
   public round = 0;
   public players: Player[] = [];
+  public event: SpecialEvent;
 
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
@@ -47,6 +49,7 @@ export class Game {
     return {
       id: this.id,
       round: this.round,
+      specialEvent: this.event,
       players: this.players.map(p => p.info),
       neutral: this.getNeutralPeople(),
       playerPeople: this._playersPeople,
@@ -59,6 +62,7 @@ export class Game {
     return {
       id: this.id,
       round: this.round,
+      specialEvent: this.event,
       ...player.info,
       ...(opponent && {
         people: this._playersPeople[playerId],
@@ -101,6 +105,11 @@ export class Game {
       this.end();
     } else {
       this.round++;
+      if (this.round === this.setting.eventRound) {
+        this.event = RandomGenerator.event();
+      } else {
+        this.event = undefined;
+      }
       this.players.forEach(p => {
         p.channelSlots = {};
         p.gold += this._playersPeople[p.id];
@@ -169,10 +178,17 @@ export class Game {
         // Limit maximum percentage to 50%
         const factor = Math.min(
           0.5,
-          channel.audio * card.audioFactor +
-            channel.visual * card.visualFactor +
-            channel.text * card.textFactor +
-            channel.baseFactor,
+          (channel.audio *
+            card.audioFactor *
+            (this.event?.cardEffect?.audio ?? 1) +
+            channel.visual *
+              card.visualFactor *
+              (this.event?.cardEffect?.visual ?? 1) +
+            channel.text *
+              card.textFactor *
+              (this.event?.cardEffect?.text ?? 1) +
+            channel.baseFactor) *
+            (this.event?.channelEffect?.[channel.channelType] ?? 1),
         );
 
         return Math.floor(

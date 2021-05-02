@@ -1,6 +1,5 @@
-import { CardData } from '../data/CardData';
+import { CardData, CardDetail } from '../data/CardData';
 import { ChannelData } from '../data/ChannelData';
-import { SpecialAction, SpecialActionData } from '../data/SpecialActionData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Card } from './Card';
 import { Channel } from './Channel';
@@ -42,9 +41,9 @@ export class Player {
       isReady: this.isReady,
       availableChannels: this.availableChannels.map(c => c.info),
       unavailableChannels: this.unavailableChannels.map(c => c.info),
-      channelSlots: Object.entries(this.channelSlots).reduce<
-        Record<number, any>
-      >(
+      channelSlots: Object.entries(this.channelSlots).reduce<{
+        [k: number]: CardDetail;
+      }>(
         (acc, [type, card]) => ({ ...acc, ...(card && { [type]: card.info }) }),
         {},
       ),
@@ -57,14 +56,10 @@ export class Player {
       const cardType = RandomGenerator.integer(0, CardData.totalTypes);
       this.cards.push(new Card(cardType));
     }
-    // TODO: Wait frontend to finish
-    // this.availableChannels = ChannelData.freeChannels.map(
-    //   c => new Channel(c.channelType),
-    // );
-    // this.unavailableChannels = ChannelData.paidChannels.map(
-    //   c => new Channel(c.channelType),
-    // );
-    this.availableChannels = ChannelData.channels.map(
+    this.availableChannels = ChannelData.freeChannels.map(
+      c => new Channel(c.channelType),
+    );
+    this.unavailableChannels = ChannelData.paidChannels.map(
       c => new Channel(c.channelType),
     );
   }
