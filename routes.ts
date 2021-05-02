@@ -75,7 +75,7 @@ router.post(
     try {
       const game = GameStore.findOne(req.body.gameId);
       const player = game.findPlayer(req.body.playerId);
-      player.buyChannels(req.body.channelIds);
+      player.buyChannels(req.body.channelTypes);
       res.send(game.getStateForPlayer(req.body.playerId));
     } catch (error) {
       res.status(400).send({ error });

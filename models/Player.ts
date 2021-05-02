@@ -64,9 +64,9 @@ export class Player {
     );
   }
 
-  public buyChannels(channelIds: string[]) {
-    const indices = channelIds.map(channelId =>
-      this.unavailableChannels.findIndex(ac => ac.id === channelId),
+  public buyChannels(types: number[]) {
+    const indices = types.map(type =>
+      this.unavailableChannels.findIndex(c => c.type === type),
     );
     if (indices.some(idx => idx < 0)) {
       throw new Error('Channel bought');
