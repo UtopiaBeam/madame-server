@@ -8,7 +8,16 @@ import { GameStore } from './stores/GameStore';
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use((req, res, next) => {
+  console.log(
+    `${new Date().toISOString()} | ${req.method} ${req.path} query: ${
+      req.query
+    } body: ${req.body}`,
+  );
+  next();
+});
 app.use(router);
+
 const server = http.createServer(app);
 
 export const io = new Server(server, {
