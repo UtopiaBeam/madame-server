@@ -10,9 +10,9 @@ app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
   console.log(
-    `${new Date().toISOString()} | ${req.method} ${req.path} query: ${
-      req.query
-    } body: ${req.body}`,
+    `${new Date().toISOString()} | ${req.method} ${
+      req.path
+    } query: ${JSON.stringify(req.query)} body: ${JSON.stringify(req.body)}`,
   );
   next();
 });
