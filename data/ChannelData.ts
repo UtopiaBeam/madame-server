@@ -21,15 +21,6 @@ export interface ChannelDetail {
 export class ChannelData {
   private static _channels = [
     {
-      name: ChannelName.Social,
-      audio: 1,
-      visual: 1,
-      text: 1,
-      price: 500,
-      channelType: 0,
-      baseFactor: 0.2,
-    },
-    {
       name: ChannelName.Gossip,
       audio: 1,
       visual: 0,
@@ -37,6 +28,15 @@ export class ChannelData {
       price: 0,
       channelType: 1,
       baseFactor: 0.03,
+    },
+    {
+      name: ChannelName.Social,
+      audio: 1,
+      visual: 1,
+      text: 1,
+      price: 500,
+      channelType: 0,
+      baseFactor: 0.2,
     },
     {
       name: ChannelName.Webpage,
@@ -48,15 +48,6 @@ export class ChannelData {
       baseFactor: 0.05,
     },
     {
-      name: ChannelName.Television,
-      audio: 1,
-      visual: 1,
-      text: 0,
-      price: 300,
-      channelType: 3,
-      baseFactor: 0.12,
-    },
-    {
       name: ChannelName.Radio,
       audio: 1,
       visual: 0,
@@ -64,6 +55,15 @@ export class ChannelData {
       price: 150,
       channelType: 4,
       baseFactor: 0.05,
+    },
+    {
+      name: ChannelName.Television,
+      audio: 1,
+      visual: 1,
+      text: 0,
+      price: 300,
+      channelType: 3,
+      baseFactor: 0.12,
     },
     {
       name: ChannelName.Print,
