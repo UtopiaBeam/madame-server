@@ -1,54 +1,14 @@
 export class GameSetting {
   constructor(
-    private _numberOfRound = 10,
-    private _totalPeople = 1000,
-    private _startGold = 500,
-    private _startNumberOfCards = 5,
-    private _startPeople = 200,
-    private _eventRound = 4,
-    private _roundDealCards = 5,
-    private _roundSelectCards = 3,
-    private _roundTime = 120,
-    private _specialActionTime = 30,
+    public numberOfRound = 10,
+    public totalPeople = 1000,
+    public startGold = 500,
+    public startNumberOfCards = 5,
+    public startPeople = 200,
+    public eventRound = 4,
+    public roundDealCards = 5,
+    public roundSelectCards = 3,
+    public roundTime = 120,
+    public specialActionTime = 30,
   ) {}
-
-  get numberOfRound(): number {
-    return this._numberOfRound;
-  }
-
-  get totalPeople(): number {
-    return this._totalPeople;
-  }
-
-  get startGold(): number {
-    return this._startGold;
-  }
-
-  get startNumberOfCards(): number {
-    return this._startNumberOfCards;
-  }
-
-  get startPeople(): number {
-    return this._startPeople;
-  }
-
-  get eventRound(): number {
-    return this._eventRound;
-  }
-
-  get roundDealCards(): number {
-    return this._roundDealCards;
-  }
-
-  get roundSelectCards(): number {
-    return this._roundSelectCards;
-  }
-
-  get roundTime(): number {
-    return this._roundTime;
-  }
-
-  get specialActionTime(): number {
-    return this._specialActionTime;
-  }
 }
