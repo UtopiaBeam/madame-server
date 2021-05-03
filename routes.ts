@@ -124,7 +124,7 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
     const result = game.battle();
-    game.emit('battle-result', { result, state: game.state });
+    game.emit('battle-result', { result });
   }
 });
 
@@ -145,6 +145,7 @@ router.post('/ready-end-round', (req: Request, res: express.Response) => {
   player.isReady = true;
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
+    game.nextRound();
     game.emit('end-round');
   }
 });

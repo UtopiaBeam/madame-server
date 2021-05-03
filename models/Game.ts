@@ -117,7 +117,6 @@ export class Game {
       });
       this._affectedPeople = {};
       this._exposedCards = {};
-      this.emit('next-round');
     }
   }
 
