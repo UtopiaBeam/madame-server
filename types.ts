@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { GameSetting } from './models/GameSetting';
 
 export interface Request<Query extends {} = {}, Body = {}>
   extends express.Request {
@@ -15,9 +16,14 @@ export interface GameSettingQuery {
   gameId: string;
 }
 
+export interface UpdateGameSettingBody {
+  setting: Partial<GameSetting>;
+}
+
 export interface CreateRoomBody {
   name: string;
   avatar: string;
+  setting?: Partial<GameSetting>;
 }
 
 export interface JoinRoomBody {

@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { io } from '.';
 import { Game } from './models/Game';
+import { GameSetting } from './models/GameSetting';
 import { Player } from './models/Player';
 import { GameStore } from './stores/GameStore';
 import { PlayerStore } from './stores/PlayerStore';
@@ -14,6 +15,7 @@ import {
   SelectCardsBody,
   StateQuery,
   UnplaceCardBody,
+  UpdateGameSettingBody,
 } from './types';
 
 const router = express.Router();
@@ -32,16 +34,24 @@ router.get(
 );
 
 router.post(
+  '/setting',
+  (req: Request<{}, UpdateGameSettingBody>, res: express.Response) => {
+    const game = GameStore.findOne(req.body.gameId);
+    res.send(game.setting);
+  },
+);
+
+router.post(
   '/create-room',
   (req: Request<{}, CreateRoomBody>, res: express.Response) => {
     const player = new Player(req.body.name, req.body.avatar);
-    const game = new Game();
+    const game = new Game(new GameSetting(req.body.setting));
 
     PlayerStore.add(player);
     GameStore.add(game);
     game.addPlayer(player);
 
-    res.send({ gameId: game.id, playerId: player.id });
+    res.send({ gameId: game.id, playerId: player.id, setting: game.setting });
   },
 );
 
@@ -54,7 +64,7 @@ router.post(
     PlayerStore.add(player);
     game.addPlayer(player);
 
-    res.send({ playerId: player.id });
+    res.send({ playerId: player.id, setting: game.setting });
   },
 );
 
