@@ -18,8 +18,10 @@ export class RandomGenerator {
     return uuid();
   }
 
-  public static cardType(): number {
-    return this.integer(0, CardData.totalTypes - 1);
+  public static cardType(round: number): number {
+    const maxType =
+      CardData.cards.findIndex(c => c.availableRound <= round + 1) - 1;
+    return this.integer(0, maxType);
   }
 
   public static event(): SpecialEvent {

@@ -123,7 +123,7 @@ export class Game {
   public dealCards() {
     const cards = [];
     for (let i = 0; i < this.setting.roundDealCards; i++) {
-      const cardType = RandomGenerator.cardType();
+      const cardType = RandomGenerator.cardType(this.round);
       const card = new Card(cardType);
       cards.push(card.info);
     }
