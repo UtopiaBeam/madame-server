@@ -16,7 +16,7 @@ export class Timer {
   }
 
   public reset() {
-    if (!this._interval) {
+    if (this._interval) {
       clearInterval(this._interval);
     }
     this._interval = null;
