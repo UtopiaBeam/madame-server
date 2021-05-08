@@ -53,7 +53,7 @@ export class Player {
   public startGame(gameSetting: GameSetting) {
     this.gold = gameSetting.startGold;
     for (let i = 0; i < gameSetting.startNumberOfCards; i++) {
-      const cardType = RandomGenerator.integer(0, CardData.totalTypes);
+      const cardType = RandomGenerator.cardType(1);
       this.cards.push(new Card(cardType));
     }
     this.availableChannels = ChannelData.freeChannels.map(

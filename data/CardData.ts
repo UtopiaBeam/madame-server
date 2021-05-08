@@ -191,10 +191,4 @@ export class CardData {
   public static getCard(cardType: number) {
     return this.cards[cardType];
   }
-
-  public static get totalTypes(): number {
-    return this.cards.length;
-  }
-
-  public static getAvailableCards(round: number) {}
 }
