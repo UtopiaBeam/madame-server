@@ -1,5 +1,7 @@
 import * as express from 'express';
 import { io } from '.';
+import { CardData } from './data/CardData';
+import { ChannelData } from './data/ChannelData';
 import { Game } from './models/Game';
 import { GameSetting } from './models/GameSetting';
 import { Player } from './models/Player';
@@ -19,6 +21,14 @@ import {
 } from './types';
 
 const router = express.Router();
+
+router.get('/channels', (req: express.Request, res: express.Response) => {
+  res.send({ channelData: ChannelData.channels });
+});
+
+router.get('/cards', (req: express.Request, res: express.Response) => {
+  res.send({ cardData: CardData.cards });
+});
 
 router.get('/state', (req: Request<StateQuery>, res: express.Response) => {
   const game = GameStore.findOne(req.query.gameId);
