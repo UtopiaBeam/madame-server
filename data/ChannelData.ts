@@ -98,6 +98,6 @@ export class ChannelData {
   }
 
   public static get paidChannels() {
-    return this.channels.filter(c => c.price === 0);
+    return this.channels.filter(c => c.price !== 0);
   }
 }
