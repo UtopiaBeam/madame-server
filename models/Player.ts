@@ -79,7 +79,8 @@ export class Player {
       throw new Error('Not enough gold');
     }
     this._gold -= totalPrice;
-    indices.forEach(idx => {
+    types.forEach(type => {
+      const idx = this.unavailableChannels.findIndex(c => c.type === type);
       const channel = this.unavailableChannels[idx];
       this.availableChannels.push(channel);
       this.unavailableChannels.splice(idx, 1);
