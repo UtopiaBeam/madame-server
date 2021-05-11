@@ -1,7 +1,7 @@
 import { io } from '..';
 import { GameStore } from '../stores/GameStore';
 import { PlayerStore } from '../stores/PlayerStore';
-import { EffectType } from '../data/CardData';
+import { CardDetail, EffectType } from '../data/CardData';
 import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
@@ -21,7 +21,7 @@ export class Game {
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
   private _affectedPeople: Record<string, number> = {};
-  private _exposedCards: Record<string, Card[]> = {};
+  private _exposedCards: Record<string, CardDetail[]> = {};
 
   constructor(public setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
@@ -273,7 +273,7 @@ export class Game {
       // Investigate a card, if fake cancel the effect
       case SpecialAction.Investigate:
         if (!card.isReal) {
-          this._exposedCards[opponent.id].push(card);
+          this._exposedCards[opponent.id].push(card.info);
           if (card.info.effectType === EffectType.PR) {
             this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           } else {
@@ -284,7 +284,7 @@ export class Game {
       // Expose a card, if fake apply the change to player
       case SpecialAction.Expose:
         if (!card.isReal) {
-          this._exposedCards[opponent.id].push(card);
+          this._exposedCards[opponent.id].push(card.info);
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           this._affectedPeople = undefined;
@@ -292,11 +292,12 @@ export class Game {
         break;
       // Reveal opponent's cards
       case SpecialAction.Spy:
-        this._exposedCards[opponent.id] = opponent.cards;
+        this._exposedCards[opponent.id] = opponent.cards.map(c => c.info);
     }
   }
 
   public getSpecialActionResult() {
+    console.log(this.state, this.getNeutralPeople());
     return this.players.reduce(
       (acc, player) => ({
         ...acc,
