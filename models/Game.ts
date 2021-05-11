@@ -225,7 +225,11 @@ export class Game {
 
     this.resetPlayersReady();
 
-    return peopleStates;
+    const playerCards = this.players.reduce(
+      (acc, p) => ({ ...acc, [p.id]: p.channelSlots }),
+      {},
+    );
+    return { ...playerCards, peopleStates };
   }
 
   public handleSpecialAction({
