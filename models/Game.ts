@@ -150,8 +150,14 @@ export class Game {
   public end() {
     const summary = Object.entries(this._playersPeople);
     const winnerId =
-      summary[0][1] > summary[1][1] ? summary[0][0] : summary[1][0];
-    this.emit('end-game', { winner: this.findPlayer(winnerId) });
+      summary[0][1] > summary[1][1]
+        ? summary[0][0]
+        : summary[0][1] < summary[1][1]
+        ? summary[1][0]
+        : null;
+    this.emit('end-game', {
+      winner: winnerId ? this.findPlayer(winnerId) : null,
+    });
 
     // Clean up
     GameStore.remove(this.id);
