@@ -94,6 +94,11 @@ export class Game {
     this._timer.start(this.setting.roundTime);
   }
 
+  public startRound() {
+    this._timer.reset();
+    this._timer.start(this.setting.roundTime);
+  }
+
   public startSpecialAction() {
     this._timer.reset();
     this.resetPlayersReady();

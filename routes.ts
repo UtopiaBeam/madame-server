@@ -201,7 +201,14 @@ router.post(
     try {
       const game = GameStore.findOne(req.body.gameId);
       game.selectCards(req.body.playerId, req.body.cardTypes);
+      const player = game.findPlayer(req.body.playerId);
+      player.isReady = true;
       res.send(game.getStateForPlayer(req.body.playerId));
+      if (game.everyPlayersReady()) {
+        game.startRound();
+        game.emit('start-round');
+        game.resetPlayersReady();
+      }
     } catch (error) {
       res.status(400).send({ error });
     }
