@@ -162,6 +162,7 @@ router.post(
   (req: Request<{}, PlaySpecialActionBody>, res: express.Response) => {
     const game = GameStore.findOne(req.body.gameId);
     game.handleSpecialAction(req.body);
+    res.send();
   },
 );
 
