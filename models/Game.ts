@@ -157,6 +157,8 @@ export class Game {
         : null;
     this.emit('end-game', {
       winner: winnerId ? this.findPlayer(winnerId) : null,
+      neutral: this.getNeutralPeople(),
+      ...this._playersPeople,
     });
 
     // Clean up
