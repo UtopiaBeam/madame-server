@@ -78,12 +78,12 @@ router.post(
   },
 );
 
-router.post('/start-game', (req: Request<{}, {}>, res: express.Response) => {
+router.post('/start-game', (req: Request, res: express.Response) => {
   const game = GameStore.findOne(req.body.gameId);
   if (game.players.length === 2) {
     game.start();
     res.sendStatus(201);
-    game.emit('start-game');
+    game.emit('start-round');
   } else {
     res.status(400).send({ error: 'Room is not full' });
   }
@@ -160,6 +160,18 @@ router.post('/ready-special-action', (req: Request, res: express.Response) => {
 });
 
 router.post('/ready-end-round', (req: Request, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  const player = game.findPlayer(req.body.playerId);
+  player.isReady = true;
+  res.send(game.getStateForPlayer(player.id));
+  if (game.everyPlayersReady()) {
+    const result = game.getSpecialActionResult();
+    game.emit('special-action-result', result);
+    game.resetPlayersReady();
+  }
+});
+
+router.post('/ready-next-round', (req: Request, res: express.Response) => {
   const game = GameStore.findOne(req.body.gameId);
   const player = game.findPlayer(req.body.playerId);
   player.isReady = true;

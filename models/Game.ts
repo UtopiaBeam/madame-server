@@ -272,4 +272,17 @@ export class Game {
         this._exposedCards[opponent.id] = opponent.cards;
     }
   }
+
+  public getSpecialActionResult() {
+    return this.players.reduce(
+      (acc, player) => ({
+        ...acc,
+        [player.id]: {
+          exposedCards: this._exposedCards[player.id],
+          people: this._playersPeople[player.id],
+        },
+      }),
+      { neutral: this.getNeutralPeople() },
+    );
+  }
 }
