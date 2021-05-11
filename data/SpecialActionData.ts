@@ -18,6 +18,6 @@ export class SpecialActionData {
   ];
 
   public static getSpecialAction(type: number): SpecialActionDetail {
-    return this.getSpecialAction[type];
+    return this.specialActions[type];
   }
 }
