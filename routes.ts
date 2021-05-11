@@ -1,5 +1,4 @@
 import * as express from 'express';
-import { io } from '.';
 import { CardData } from './data/CardData';
 import { ChannelData } from './data/ChannelData';
 import { SpecialActionData } from './data/SpecialActionData';
@@ -18,7 +17,6 @@ import {
   Request,
   SelectCardsBody,
   StateQuery,
-  UnplaceCardBody,
   UpdateGameSettingBody,
 } from './types';
 
