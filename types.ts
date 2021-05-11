@@ -48,3 +48,9 @@ export interface UnplaceCardBody {
 export interface SelectCardsBody {
   cardTypes: number[];
 }
+
+export interface PlaySpecialActionBody {
+  actionType: number;
+  playerId: string;
+  cardId?: string;
+}

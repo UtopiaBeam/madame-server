@@ -10,6 +10,7 @@ import { GameSetting } from './GameSetting';
 import { Player } from './Player';
 import { SpecialAction, SpecialActionData } from '../data/SpecialActionData';
 import { SpecialEvent } from '../data/SpecialEventData';
+import { PlaySpecialActionBody } from '../types';
 
 export class Game {
   public id: string;
@@ -226,11 +227,11 @@ export class Game {
     return peopleStates;
   }
 
-  public handleSpecialAction(
-    actionType: number,
-    playerId: string,
-    cardId?: string,
-  ) {
+  public handleSpecialAction({
+    actionType,
+    playerId,
+    cardId,
+  }: PlaySpecialActionBody) {
     const action = SpecialActionData.getSpecialAction(actionType);
     const player = this.findPlayer(playerId);
 

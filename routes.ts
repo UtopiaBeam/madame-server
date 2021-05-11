@@ -14,6 +14,7 @@ import {
   GameSettingQuery,
   JoinRoomBody,
   PlaceCardBody,
+  PlaySpecialActionBody,
   Request,
   SelectCardsBody,
   StateQuery,
@@ -155,6 +156,14 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
     game.emit('battle-result', { result });
   }
 });
+
+router.post(
+  '/play-special-action',
+  (req: Request<{}, PlaySpecialActionBody>, res: express.Response) => {
+    const game = GameStore.findOne(req.body.gameId);
+    game.handleSpecialAction(req.body);
+  },
+);
 
 router.post('/ready-special-action', (req: Request, res: express.Response) => {
   const game = GameStore.findOne(req.body.gameId);
