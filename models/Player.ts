@@ -57,10 +57,10 @@ export class Player {
       this.cards.push(new Card(cardType));
     }
     this.availableChannels = ChannelData.freeChannels.map(
-      c => new Channel(c.channelType),
+      c => new Channel(c.type),
     );
     this.unavailableChannels = ChannelData.paidChannels.map(
-      c => new Channel(c.channelType),
+      c => new Channel(c.type),
     );
   }
 
@@ -85,16 +85,10 @@ export class Player {
       this.availableChannels.push(channel);
       this.unavailableChannels.splice(idx, 1);
     });
-    this.availableChannels.sort(
-      (c1, c2) => c1.info.channelType - c2.info.channelType,
-    );
+    this.availableChannels.sort((c1, c2) => c1.info.type - c2.info.type);
   }
 
-  public placeCardToChannel(
-    channelType: number,
-    cardId: string,
-    isReal: boolean,
-  ) {
+  public placeCardToChannel(type: number, cardId: string, isReal: boolean) {
     const idx = this.cards.findIndex(c => c.id === cardId);
     if (idx < 0) {
       throw new Error('Card is not in your hand');
@@ -104,21 +98,21 @@ export class Player {
     if (cost > this._gold) {
       throw new Error('Not enough gold');
     }
-    if (this.channelSlots[channelType]) {
-      this.cards.push(this.channelSlots[channelType]);
+    if (this.channelSlots[type]) {
+      this.cards.push(this.channelSlots[type]);
     }
     this.cards.splice(idx, 1);
     card.isReal = isReal;
     this._gold -= cost;
-    this.channelSlots[channelType] = card;
+    this.channelSlots[type] = card;
   }
 
-  public unplaceCardFromChannel(channelType: number) {
-    if (!this.channelSlots[channelType]) {
+  public unplaceCardFromChannel(type: number) {
+    if (!this.channelSlots[type]) {
       throw new Error('No card in this channel');
     }
-    const card = this.channelSlots[channelType];
-    this.channelSlots[channelType] = undefined;
+    const card = this.channelSlots[type];
+    this.channelSlots[type] = undefined;
     card.isReal = true;
     this.cards.push(card);
   }

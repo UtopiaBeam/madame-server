@@ -185,7 +185,7 @@ export class Game {
     for (const channel of ChannelData.channels) {
       const affectedPeople = this.players.map(player => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.channelType]?.info;
+        const card = player.channelSlots[channel.type]?.info;
         if (!card) {
           return 0;
         }
@@ -202,7 +202,7 @@ export class Game {
               card.textFactor *
               (this.event?.cardEffect?.text ?? 1) +
             channel.baseFactor) *
-            (this.event?.channelEffect?.[channel.channelType] ?? 1),
+            (this.event?.channelEffect?.[channel.type] ?? 1),
         );
 
         return Math.floor(
@@ -215,7 +215,7 @@ export class Game {
 
       this.players.forEach((player, idx) => {
         const opponent = this.getOpponent(player.id);
-        const card = player.channelSlots[channel.channelType]?.info;
+        const card = player.channelSlots[channel.type]?.info;
         if (!card) {
           return;
         }

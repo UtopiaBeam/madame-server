@@ -14,19 +14,18 @@ export interface ChannelDetail {
   visual: number;
   text: number;
   price: number;
-  channelType: number;
+  type: number;
   baseFactor: number;
 }
 
 export class ChannelData {
-  private static _channels = [
+  private static _channels: Omit<ChannelDetail, 'type'>[] = [
     {
       name: ChannelName.Gossip,
       audio: 1,
       visual: 0,
       text: 0,
       price: 0,
-      channelType: 1,
       baseFactor: 0.03,
     },
     {
@@ -35,7 +34,6 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 500,
-      channelType: 0,
       baseFactor: 0.2,
     },
     {
@@ -44,7 +42,6 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 0,
-      channelType: 2,
       baseFactor: 0.05,
     },
     {
@@ -53,7 +50,6 @@ export class ChannelData {
       visual: 0,
       text: 0,
       price: 150,
-      channelType: 4,
       baseFactor: 0.05,
     },
     {
@@ -62,7 +58,6 @@ export class ChannelData {
       visual: 1,
       text: 0,
       price: 300,
-      channelType: 3,
       baseFactor: 0.12,
     },
     {
@@ -71,7 +66,6 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 0,
-      channelType: 5,
       baseFactor: 0.08,
     },
     {
@@ -80,13 +74,12 @@ export class ChannelData {
       visual: 1,
       text: 1,
       price: 250,
-      channelType: 6,
       baseFactor: 0.1,
     },
   ];
 
   public static get channels() {
-    return this._channels.map((c, idx) => ({ type: idx, ...c }));
+    return this._channels.map<ChannelDetail>((c, idx) => ({ type: idx, ...c }));
   }
 
   public static getChannel(channelType: number) {
