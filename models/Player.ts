@@ -99,11 +99,17 @@ export class Player {
     if (idx < 0) {
       throw new Error('Card is not in your hand');
     }
+    const card = this.cards[idx];
+    const cost = isReal ? card.info.cost : card.info.cost / 2;
+    if (cost > this._gold) {
+      throw new Error('Not enough gold');
+    }
     if (this.channelSlots[channelType]) {
       this.cards.push(this.channelSlots[channelType]);
     }
-    const card = this.cards.splice(idx, 1)[0];
+    this.cards.splice(idx, 1);
     card.isReal = isReal;
+    this._gold -= cost;
     this.channelSlots[channelType] = card;
   }
 
