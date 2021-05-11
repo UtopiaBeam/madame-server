@@ -88,7 +88,6 @@ export class Game {
     this.round = 1;
     this.players.forEach(player => {
       this._playersPeople[player.id] = this.setting.startPeople;
-      this._exposedCards[player.id] = [];
       player.startGame(this.setting);
     });
     this._timer.start(this.setting.roundTime);
@@ -102,10 +101,6 @@ export class Game {
   public startSpecialAction() {
     this._timer.reset();
     this.resetPlayersReady();
-    this._exposedCards = this.players.reduce(
-      (acc, p) => ({ ...acc, [p.id]: [] }),
-      {},
-    );
     this._timer.start(this.setting.specialActionTime);
   }
 
