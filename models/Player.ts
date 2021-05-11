@@ -13,6 +13,7 @@ export class Player {
   public channelSlots: Record<number, Card> = {};
   public isReady: boolean = false;
   public usedActionType: number;
+  public exposedCards: Record<number, CardDetail & { actionType: number }> = {};
 
   private _gold: number = 500;
 

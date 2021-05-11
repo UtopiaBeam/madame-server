@@ -21,10 +21,6 @@ export class Game {
   private _timer: Timer;
   private _playersPeople: Record<string, number> = {};
   private _affectedPeople: Record<string, number> = {};
-  private _exposedCards: Record<
-    string,
-    (CardDetail & { actionType: number })[]
-  > = {};
 
   constructor(public setting = new GameSetting()) {
     this.id = RandomGenerator.gameId();
@@ -127,9 +123,9 @@ export class Game {
         p.channelSlots = {};
         p.gold += this._playersPeople[p.id];
         p.usedActionType = undefined;
+        p.exposedCards = {};
       });
       this._affectedPeople = {};
-      this._exposedCards = {};
       this.resetPlayersReady();
     }
   }
@@ -272,11 +268,14 @@ export class Game {
     const card = Object.values(opponent.channelSlots).find(
       c => c.id === cardId,
     );
+    const channelType = +Object.keys(player.channelSlots).find(
+      type => player.channelSlots[+type]?.id === cardId,
+    );
     switch (action.name) {
       // Investigate a card, if fake cancel the effect
       case SpecialAction.Investigate:
         if (!card.isReal) {
-          this._exposedCards[opponent.id].push({ ...card.info, actionType });
+          opponent.exposedCards[channelType] = { ...card.info, actionType };
           if (card.info.effectType === EffectType.PR) {
             this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           } else {
@@ -287,7 +286,7 @@ export class Game {
       // Expose a card, if fake apply the change to player
       case SpecialAction.Expose:
         if (!card.isReal) {
-          this._exposedCards[opponent.id].push({ ...card.info, actionType });
+          opponent.exposedCards[channelType] = { ...card.info, actionType };
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           this._affectedPeople = undefined;
@@ -295,10 +294,12 @@ export class Game {
         break;
       // Reveal opponent's cards
       case SpecialAction.Spy:
-        this._exposedCards[opponent.id] = opponent.cards.map(c => ({
-          ...c.info,
-          actionType,
-        }));
+        opponent.exposedCards[channelType] = Object.entries(
+          opponent.channelSlots,
+        ).reduce(
+          (acc, [key, val]) => ({ ...acc, [key]: { ...val, actionType } }),
+          {} as CardDetail & { actionType: number },
+        );
     }
   }
 
@@ -308,7 +309,7 @@ export class Game {
       (acc, player) => ({
         ...acc,
         [player.id]: {
-          exposedCards: this._exposedCards[player.id],
+          exposedCards: player.exposedCards,
           people: this._playersPeople[player.id],
         },
       }),
