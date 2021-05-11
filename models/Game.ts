@@ -103,6 +103,10 @@ export class Game {
   public startSpecialAction() {
     this._timer.reset();
     this.resetPlayersReady();
+    this._exposedCards = this.players.reduce(
+      (acc, p) => ({ ...acc, [p.id]: [] }),
+      {},
+    );
     this._timer.start(this.setting.specialActionTime);
   }
 
