@@ -157,8 +157,6 @@ export class Game {
         : null;
     this.emit('end-game', {
       winner: winnerId ? this.findPlayer(winnerId) : null,
-      neutral: this.getNeutralPeople(),
-      ...this._playersPeople,
     });
 
     // Clean up
@@ -234,7 +232,7 @@ export class Game {
     this.resetPlayersReady();
 
     const playerCards = this.players.reduce(
-      (acc, p) => ({ ...acc, [p.id]: p.channelSlots }),
+      (acc, p) => ({ ...acc, [p.id]: p.info.channelSlots }),
       {},
     );
     return { ...playerCards, peopleStates };
