@@ -1,4 +1,4 @@
-import { CardData, CardDetail } from '../data/CardData';
+import { CardDetail } from '../data/CardData';
 import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Card } from './Card';
