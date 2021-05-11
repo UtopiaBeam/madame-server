@@ -75,7 +75,7 @@ export class Game {
 
   public addPlayer(player: Player) {
     if (this.players.length >= 2) {
-      throw new Error('Room is full');
+      throw new Error('ห้องเต็ม');
     }
     this.players.push(player);
   }
@@ -140,7 +140,7 @@ export class Game {
 
   public selectCards(playerId: string, cardTypes: number[]) {
     if (cardTypes.length !== this.setting.roundSelectCards) {
-      throw new Error('Invalid number of selected cards');
+      throw new Error('จำนวนการที่เลือกไม่ถูกต้อง');
     }
     const player = this.findPlayer(playerId);
     const cards = cardTypes.map(ct => new Card(ct));
@@ -249,13 +249,13 @@ export class Game {
     const player = this.findPlayer(playerId);
 
     if (player.usedActionType && player.usedActionType !== actionType) {
-      throw new Error('Cannot do different action');
+      throw new Error('ไม่สามารถทำการกระทำพิเศษอื่นได้');
     }
     if (player.usedActionType === 2) {
-      throw new Error('Can only spy once');
+      throw new Error('สามารถสอดส่องได้ตาละครั้งเท่านั้น');
     }
     if (action.cost > player.gold) {
-      throw new Error('Not enough money');
+      throw new Error('เงินไม่พอ');
     }
 
     player.gold -= action.cost;

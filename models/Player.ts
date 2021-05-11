@@ -69,14 +69,14 @@ export class Player {
       this.unavailableChannels.findIndex(c => c.type === type),
     );
     if (indices.some(idx => idx < 0)) {
-      throw new Error('Channel bought');
+      throw new Error('ช่องทางถูกซื้อแล้ว');
     }
     const totalPrice = indices.reduce(
       (acc, idx) => acc + this.unavailableChannels[idx].info.price,
       0,
     );
     if (totalPrice > this._gold) {
-      throw new Error('Not enough gold');
+      throw new Error('เงินไม่พอ');
     }
     this._gold -= totalPrice;
     types.forEach(type => {
@@ -91,15 +91,15 @@ export class Player {
   public placeCardToChannel(type: number, cardId: string, isReal: boolean) {
     const idx = this.cards.findIndex(c => c.id === cardId);
     if (idx < 0) {
-      throw new Error('Card is not in your hand');
+      throw new Error('การ์ดนี้ไม่อยู่บนมือของคุณ');
     }
     if (this.availableChannels.findIndex(c => c.type === type) < 0) {
-      throw new Error('Channel unavailable');
+      throw new Error('ช่องทางนี้ไม่สามารถใช้งานได้');
     }
     const card = this.cards[idx];
     const cost = isReal ? card.info.cost : card.info.cost / 2;
     if (cost > this._gold) {
-      throw new Error('Not enough gold');
+      throw new Error('เงินไม่พอ');
     }
     if (this.channelSlots[type]) {
       this.cards.push(this.channelSlots[type]);
@@ -108,15 +108,5 @@ export class Player {
     card.isReal = isReal;
     this._gold -= cost;
     this.channelSlots[type] = card;
-  }
-
-  public unplaceCardFromChannel(type: number) {
-    if (!this.channelSlots[type]) {
-      throw new Error('No card in this channel');
-    }
-    const card = this.channelSlots[type];
-    this.channelSlots[type] = undefined;
-    card.isReal = true;
-    this.cards.push(card);
   }
 }

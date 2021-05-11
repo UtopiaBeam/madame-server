@@ -94,7 +94,7 @@ router.post('/start-game', (req: Request, res: express.Response) => {
     res.sendStatus(201);
     game.emit('start-round');
   } else {
-    res.status(400).send({ error: 'Room is not full' });
+    res.status(400).send({ error: 'ห้องเต็ม' });
   }
 });
 
@@ -119,7 +119,7 @@ router.post(
       const game = GameStore.findOne(req.body.gameId);
       const player = game.findPlayer(req.body.playerId);
       if (game.event && !game.event.cardEffect.allowFake && !req.body.isReal) {
-        throw new Error('Fake card is not allowed this round');
+        throw new Error('ไม่สามารถใช้การ์ดปลอมในตานี้');
       }
       player.placeCardToChannel(
         req.body.channelType,
@@ -127,19 +127,6 @@ router.post(
         req.body.isReal,
       );
       res.send(game.getStateForPlayer(req.body.playerId));
-    } catch (error) {
-      res.status(400).send({ error: error.message });
-    }
-  },
-);
-
-router.post(
-  '/unplace-card',
-  (req: Request<{}, UnplaceCardBody>, res: express.Response) => {
-    try {
-      const game = GameStore.findOne(req.body.gameId);
-      const player = game.findPlayer(req.body.playerId);
-      player.unplaceCardFromChannel(req.body.channelType);
     } catch (error) {
       res.status(400).send({ error: error.message });
     }

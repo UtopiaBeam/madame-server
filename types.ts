@@ -41,10 +41,6 @@ export interface PlaceCardBody {
   isReal: boolean;
 }
 
-export interface UnplaceCardBody {
-  channelType: number;
-}
-
 export interface SelectCardsBody {
   cardTypes: number[];
 }
