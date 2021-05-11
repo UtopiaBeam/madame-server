@@ -123,6 +123,7 @@ export class Game {
       });
       this._affectedPeople = {};
       this._exposedCards = {};
+      this.resetPlayersReady();
     }
   }
 
