@@ -93,6 +93,9 @@ export class Player {
     if (idx < 0) {
       throw new Error('Card is not in your hand');
     }
+    if (this.availableChannels.findIndex(c => c.type === type) < 0) {
+      throw new Error('Channel unavailable');
+    }
     const card = this.cards[idx];
     const cost = isReal ? card.info.cost : card.info.cost / 2;
     if (cost > this._gold) {
