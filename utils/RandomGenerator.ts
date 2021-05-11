@@ -19,8 +19,8 @@ export class RandomGenerator {
   }
 
   public static cardType(round: number): number {
-    const maxType =
-      CardData.cards.findIndex(c => c.availableRound <= round + 1) - 1;
+    const idx = CardData.cards.findIndex(c => c.availableRound === round + 1);
+    const maxType = (idx < 0 ? CardData.cards.length : idx) - 1;
     return this.integer(0, maxType);
   }
 
