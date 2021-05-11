@@ -107,7 +107,7 @@ router.post(
       player.buyChannels(req.body.channelTypes);
       res.send(game.getStateForPlayer(req.body.playerId));
     } catch (error) {
-      res.status(400).send({ error });
+      res.status(400).send({ error: error.message });
     }
   },
 );
@@ -128,7 +128,7 @@ router.post(
       );
       res.send(game.getStateForPlayer(req.body.playerId));
     } catch (error) {
-      res.status(400).send({ error });
+      res.status(400).send({ error: error.message });
     }
   },
 );
@@ -141,7 +141,7 @@ router.post(
       const player = game.findPlayer(req.body.playerId);
       player.unplaceCardFromChannel(req.body.channelType);
     } catch (error) {
-      res.status(400).send({ error });
+      res.status(400).send({ error: error.message });
     }
   },
 );
@@ -224,7 +224,7 @@ router.post(
         game.resetPlayersReady();
       }
     } catch (error) {
-      res.status(400).send({ error });
+      res.status(400).send({ error: error.message });
     }
   },
 );
