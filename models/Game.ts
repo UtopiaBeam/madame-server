@@ -147,7 +147,7 @@ export class Game {
     player.cards.push(...cards);
   }
 
-  private end() {
+  public end() {
     const summary = Object.entries(this._playersPeople);
     const winnerId =
       summary[0][1] > summary[1][1] ? summary[0][0] : summary[1][0];

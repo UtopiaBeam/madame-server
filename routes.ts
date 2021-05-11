@@ -195,8 +195,12 @@ router.post('/ready-next-round', (req: Request, res: express.Response) => {
   player.isReady = true;
   res.send(game.getStateForPlayer(player.id));
   if (game.everyPlayersReady()) {
-    game.nextRound();
-    game.emit('end-round');
+    if (game.round === game.setting.numberOfRound) {
+      game.end();
+    } else {
+      game.nextRound();
+      game.emit('end-round');
+    }
   }
 });
 
