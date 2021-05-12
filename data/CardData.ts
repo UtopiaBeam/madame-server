@@ -117,9 +117,9 @@ export class CardData {
     {
       name: 'ฉันจบเกียรตินิยม มหาลัยชั้นนำนะจ๊ะ!',
       effectType: EffectType.PR,
-      audioFactor: 12,
+      audioFactor: 0.12,
       visualFactor: 0,
-      textFactor: 12,
+      textFactor: 0.12,
       cost: 160,
       availableRound: 3,
     },
