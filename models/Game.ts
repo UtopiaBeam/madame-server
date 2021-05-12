@@ -278,6 +278,7 @@ export class Game {
           }
           this._affectedPeople = undefined;
         }
+        break;
       // Expose a card, if fake apply the change to player
       case SpecialAction.Expose:
         if (!card.isReal) {
