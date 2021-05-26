@@ -261,12 +261,19 @@ export class Game {
     player.usedActionType = actionType;
 
     const opponent = this.getOpponent(playerId);
-    const [channelType, card] = Object.entries(opponent.channelSlots).find(
-      ([_, c]) => c.id === cardId,
-    );
-    switch (action.name) {
+
+    // Reveal opponent's cards
+    if (action.name === SpecialAction.Spy) {
+      Object.entries(opponent.channelSlots).forEach(([channelType, card]) => {
+        opponent.exposedCards[channelType] = { ...card.info, actionType };
+      });
+    } else {
+      const [channelType, card] = Object.entries(opponent.channelSlots).find(
+        ([_, c]) => c.id === cardId,
+      );
+
       // Investigate a card, if fake cancel the effect
-      case SpecialAction.Investigate:
+      if (action.name === SpecialAction.Investigate) {
         if (!card.isReal) {
           opponent.exposedCards[channelType] = { ...card.info, actionType };
           if (card.info.effectType === EffectType.PR) {
@@ -276,29 +283,20 @@ export class Game {
           }
           this._affectedPeople[card.id] = undefined;
         }
-        break;
+      }
       // Expose a card, if fake apply the change to player
-      case SpecialAction.Expose:
+      else if (action.name === SpecialAction.Expose) {
         if (!card.isReal) {
           opponent.exposedCards[channelType] = { ...card.info, actionType };
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           this._affectedPeople[card.id] = undefined;
         }
-        break;
-      // Reveal opponent's cards
-      case SpecialAction.Spy:
-        opponent.exposedCards[channelType] = Object.entries(
-          opponent.channelSlots,
-        ).reduce(
-          (acc, [key, val]) => ({ ...acc, [key]: { ...val, actionType } }),
-          {} as CardDetail & { actionType: number },
-        );
+      }
     }
   }
 
   public getSpecialActionResult() {
-    console.log(this.state, this.getNeutralPeople());
     return this.players.reduce(
       (acc, player) => ({
         ...acc,
