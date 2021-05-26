@@ -177,7 +177,7 @@ export class Game {
   }
 
   public battle() {
-    const playerPeople = this._playersPeople;
+    const playerPeople = { ...this._playersPeople };
     const peopleStates: Record<string, number>[] = [];
 
     for (const channel of ChannelData.channels) {
