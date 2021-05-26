@@ -217,12 +217,11 @@ export class Game {
         if (!card) {
           return;
         }
+        this._affectedPeople[card.id] = affectedPeople[idx];
         if (card.effectType === EffectType.PR) {
           playerPeople[player.id] += affectedPeople[idx];
-          this._affectedPeople[player.id] = affectedPeople[idx];
         } else {
           playerPeople[opponent.id] -= affectedPeople[idx];
-          this._affectedPeople[opponent.id] = affectedPeople[idx];
         }
       });
 
@@ -262,11 +261,8 @@ export class Game {
     player.usedActionType = actionType;
 
     const opponent = this.getOpponent(playerId);
-    const card = Object.values(opponent.channelSlots).find(
-      c => c.id === cardId,
-    );
-    const channelType = +Object.keys(player.channelSlots).find(
-      type => player.channelSlots[+type]?.id === cardId,
+    const [channelType, card] = Object.entries(opponent.channelSlots).find(
+      ([_, c]) => c.id === cardId,
     );
     switch (action.name) {
       // Investigate a card, if fake cancel the effect
@@ -278,7 +274,7 @@ export class Game {
           } else {
             this._playersPeople[player.id] += this._affectedPeople[card.id];
           }
-          this._affectedPeople = undefined;
+          this._affectedPeople[card.id] = undefined;
         }
         break;
       // Expose a card, if fake apply the change to player
@@ -287,7 +283,7 @@ export class Game {
           opponent.exposedCards[channelType] = { ...card.info, actionType };
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
-          this._affectedPeople = undefined;
+          this._affectedPeople[card.id] = undefined;
         }
         break;
       // Reveal opponent's cards
