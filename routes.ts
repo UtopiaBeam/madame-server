@@ -147,7 +147,9 @@ router.post(
   (req: Request<{}, PlaySpecialActionBody>, res: express.Response) => {
     const game = GameStore.findOne(req.body.gameId);
     game.handleSpecialAction(req.body);
-    res.send(game.getSpecialActionResult());
+    const result = game.getSpecialActionResult();
+    const state = game.getStateForPlayer(req.body.playerId);
+    res.send({ state, result });
   },
 );
 
