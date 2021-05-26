@@ -229,6 +229,8 @@ export class Game {
       peopleStates.push({ ...playerPeople });
     }
 
+    this._playersPeople = { ...playerPeople };
+
     this.resetPlayersReady();
 
     const playerCards = this.players.reduce(
