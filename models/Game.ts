@@ -271,11 +271,11 @@ export class Game {
       const [channelType, card] = Object.entries(opponent.channelSlots).find(
         ([_, c]) => c.id === cardId,
       );
+      opponent.exposedCards[channelType] = { ...card.info, actionType };
 
       // Investigate a card, if fake cancel the effect
       if (action.name === SpecialAction.Investigate) {
         if (!card.isReal) {
-          opponent.exposedCards[channelType] = { ...card.info, actionType };
           if (card.info.effectType === EffectType.PR) {
             this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           } else {
@@ -287,7 +287,6 @@ export class Game {
       // Expose a card, if fake apply the change to player
       else if (action.name === SpecialAction.Expose) {
         if (!card.isReal) {
-          opponent.exposedCards[channelType] = { ...card.info, actionType };
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           this._affectedPeople[card.id] = undefined;
