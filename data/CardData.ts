@@ -14,7 +14,7 @@ export interface CardDetail {
 }
 
 export class CardData {
-  public static cards: CardDetail[] = [
+  private static _cards: CardDetail[] = [
     {
       name: 'แนะนำตัวต่อสาธารณะชน',
       audioFactor: 0.01,
@@ -188,7 +188,11 @@ export class CardData {
     },
   ];
 
+  public static get cards() {
+    return this._cards.map((c, type) => ({ type, ...c }));
+  }
+
   public static getCard(cardType: number) {
-    return this.cards[cardType];
+    return this._cards[cardType];
   }
 }

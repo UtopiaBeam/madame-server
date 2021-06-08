@@ -1,7 +1,7 @@
 import { io } from '..';
 import { GameStore } from '../stores/GameStore';
 import { PlayerStore } from '../stores/PlayerStore';
-import { CardDetail, EffectType } from '../data/CardData';
+import { CardData, CardDetail, EffectType } from '../data/CardData';
 import { ChannelData } from '../data/ChannelData';
 import { RandomGenerator } from '../utils/RandomGenerator';
 import { Timer } from '../utils/Timer';
@@ -126,14 +126,9 @@ export class Game {
   }
 
   public dealCards() {
-    const cards = [];
-    for (let i = 0; i < this.setting.roundDealCards; i++) {
-      const cardType = RandomGenerator.cardType(this.round);
-      const card = new Card(cardType);
-      cards.push(card.info);
-    }
-
-    return cards;
+    return CardData.cards
+      .filter(card => card.availableRound === this.round)
+      .map(card => new Card(card.type));
   }
 
   public selectCards(playerId: string, cardTypes: number[]) {
