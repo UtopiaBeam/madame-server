@@ -17,6 +17,7 @@ import {
   Request,
   SelectCardsBody,
   StateQuery,
+  UnplaceCardBody,
   UpdateGameSettingBody,
 } from './types';
 
@@ -141,6 +142,19 @@ router.post('/ready-battle', (req: Request, res: express.Response) => {
     game.emit('battle-result', { result });
   }
 });
+
+router.post(
+  '/unplace-card',
+  (req: Request<{}, UnplaceCardBody>, res: express.Response) => {
+    try {
+      const game = GameStore.findOne(req.body.gameId);
+      const player = game.findPlayer(req.body.playerId);
+      player.unplaceCardFromChannel(req.body.channelType);
+    } catch (error) {
+      res.status(400).send({ error });
+    }
+  },
+);
 
 router.post(
   '/play-special-action',

@@ -110,4 +110,14 @@ export class Player {
     this._gold -= cost;
     this.channelSlots[type] = card;
   }
+
+  public unplaceCardFromChannel(type: number) {
+    if (!this.channelSlots[type]) {
+      throw new Error('ไม่มีการ์ดในช่องทางนี้');
+    }
+    const card = this.channelSlots[type];
+    this.channelSlots[type] = undefined;
+    card.isReal = true;
+    this.cards.push(card);
+  }
 }
