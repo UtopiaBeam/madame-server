@@ -16,6 +16,7 @@ export class Player {
   public exposedCards: Record<number, CardDetail & { actionType: number }> = {};
 
   private _gold: number = 500;
+  public undealtCardTypes: number[] = [];
 
   constructor(public readonly name: string, public readonly avatar: string) {
     this.id = RandomGenerator.uuid();

@@ -207,7 +207,7 @@ router.post('/ready-next-round', (req: Request, res: express.Response) => {
 
 router.post('/deal-cards', (req: Request, res: express.Response) => {
   const game = GameStore.findOne(req.body.gameId);
-  res.send(game.dealCards());
+  res.send(game.dealCards(req.body.playerId));
 });
 
 router.post(

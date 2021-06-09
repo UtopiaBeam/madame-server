@@ -125,18 +125,25 @@ export class Game {
     }
   }
 
-  public dealCards() {
-    return CardData.cards
-      .filter(card => card.availableRound === this.round)
-      .map(card => new Card(card.type).info);
+  public dealCards(playerId: string) {
+    const player = this.findPlayer(playerId);
+    player.undealtCardTypes.push(
+      ...CardData.cards
+        .filter(card => card.availableRound === this.round)
+        .map(card => card.type),
+    );
+    return player.undealtCardTypes.map(ct => new Card(ct).info);
   }
 
   public selectCards(playerId: string, cardTypes: number[]) {
     if (cardTypes.length !== this.setting.roundSelectCards) {
-      throw new Error('จำนวนการที่เลือกไม่ถูกต้อง');
+      throw new Error('จำนวนการ์ดที่เลือกไม่ถูกต้อง');
     }
     const player = this.findPlayer(playerId);
     const cards = cardTypes.map(ct => new Card(ct));
+    player.undealtCardTypes = player.undealtCardTypes.filter(
+      ct => !cardTypes.includes(ct),
+    );
     player.cards.push(...cards);
   }
 
@@ -183,7 +190,6 @@ export class Game {
           return 0;
         }
         // Limit maximum percentage to 50%
-        console.log(channel, card);
         const channelEffect = this.event?.channelEffect?.[channel.type] ?? 1;
         let factor = Math.min(
           0.5,
