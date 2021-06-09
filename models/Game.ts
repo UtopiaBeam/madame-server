@@ -85,7 +85,7 @@ export class Game {
 
   public removePlayer(playerId: string) {
     const idx = this.players.findIndex(p => p.id === playerId);
-    this.players.slice(idx, 1);
+    this.players.splice(idx, 1);
   }
 
   public start() {
