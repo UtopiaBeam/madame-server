@@ -251,7 +251,7 @@ export class Game {
     actionType,
     playerId,
     cardId,
-  }: PlaySpecialActionBody) {
+  }: PlaySpecialActionBody): boolean {
     const action = SpecialActionData.getSpecialAction(actionType);
     const player = this.findPlayer(playerId);
 
@@ -275,6 +275,7 @@ export class Game {
       Object.entries(opponent.channelSlots).forEach(([channelType, card]) => {
         opponent.exposedCards[channelType] = { ...card.info, actionType };
       });
+      return true;
     } else {
       const [channelType, card] = Object.entries(opponent.channelSlots).find(
         ([_, c]) => c.id === cardId,
@@ -290,6 +291,7 @@ export class Game {
             this._playersPeople[player.id] += this._affectedPeople[card.id];
           }
           this._affectedPeople[card.id] = undefined;
+          return true;
         }
       }
       // Expose a card, if fake apply the change to player
@@ -298,9 +300,11 @@ export class Game {
           this._playersPeople[player.id] += this._affectedPeople[card.id];
           this._playersPeople[opponent.id] -= this._affectedPeople[card.id];
           this._affectedPeople[card.id] = undefined;
+          return true;
         }
       }
     }
+    return false;
   }
 
   public getSpecialActionResult() {

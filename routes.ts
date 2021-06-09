@@ -160,10 +160,10 @@ router.post(
   '/play-special-action',
   (req: Request<{}, PlaySpecialActionBody>, res: express.Response) => {
     const game = GameStore.findOne(req.body.gameId);
-    game.handleSpecialAction(req.body);
+    const success = game.handleSpecialAction(req.body);
     const result = game.getSpecialActionResult();
     const state = game.getStateForPlayer(req.body.playerId);
-    res.send({ state, result });
+    res.send({ state, result, success });
   },
 );
 
