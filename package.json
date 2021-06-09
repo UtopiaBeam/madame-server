@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc -w",
+    "dev": "ts-node-dev --respawn .",
     "start": "node dist/index.js"
   }
 }

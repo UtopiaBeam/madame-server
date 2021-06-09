@@ -128,7 +128,7 @@ export class Game {
   public dealCards() {
     return CardData.cards
       .filter(card => card.availableRound === this.round)
-      .map(card => new Card(card.type));
+      .map(card => new Card(card.type).info);
   }
 
   public selectCards(playerId: string, cardTypes: number[]) {
