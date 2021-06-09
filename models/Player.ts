@@ -117,7 +117,8 @@ export class Player {
       throw new Error('ไม่มีการ์ดในช่องทางนี้');
     }
     const card = this.channelSlots[type];
-    this.channelSlots[type] = undefined;
+    const { [type]: _, ...rest } = this.channelSlots;
+    this.channelSlots = rest;
     card.isReal = true;
     this.cards.push(card);
   }

@@ -151,7 +151,7 @@ router.post(
       const player = game.findPlayer(req.body.playerId);
       player.unplaceCardFromChannel(req.body.channelType);
     } catch (error) {
-      res.status(400).send({ error });
+      res.status(400).send({ error: error.message });
     }
   },
 );
