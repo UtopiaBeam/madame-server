@@ -119,6 +119,7 @@ export class Player {
     const card = this.channelSlots[type];
     const { [type]: _, ...rest } = this.channelSlots;
     this.channelSlots = rest;
+    this._gold += card.isReal ? card.info.cost : card.info.cost / 2;
     card.isReal = true;
     this.cards.push(card);
   }
