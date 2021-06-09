@@ -183,9 +183,11 @@ export class Game {
           return 0;
         }
         // Limit maximum percentage to 50%
-        const factor = Math.min(
+        console.log(channel, card);
+        const channelEffect = this.event?.channelEffect?.[channel.type] ?? 1;
+        let factor = Math.min(
           0.5,
-          (channel.audio *
+          channel.audio *
             card.audioFactor *
             (this.event?.cardEffect?.audio ?? 1) +
             channel.visual *
@@ -193,10 +195,10 @@ export class Game {
               (this.event?.cardEffect?.visual ?? 1) +
             channel.text *
               card.textFactor *
-              (this.event?.cardEffect?.text ?? 1) +
-            channel.baseFactor) *
-            (this.event?.channelEffect?.[channel.type] ?? 1),
+              (this.event?.cardEffect?.text ?? 1),
         );
+        factor =
+          (factor + (factor > 0 ? channel.baseFactor : 0)) * channelEffect;
 
         return Math.floor(
           factor *
