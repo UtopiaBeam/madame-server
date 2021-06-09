@@ -113,7 +113,7 @@ export class Player {
   }
 
   public unplaceCardFromChannel(type: number) {
-    if (!Object.keys(this.channelSlots).includes(`${type)) {
+    if (!Object.keys(this.channelSlots).includes(`${type}`)) {
       throw new Error('ไม่มีการ์ดในช่องทางนี้');
     }
     const card = this.channelSlots[type];
