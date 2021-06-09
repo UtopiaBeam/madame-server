@@ -83,6 +83,11 @@ export class Game {
     return this.players.find(p => p.id === playerId);
   }
 
+  public removePlayer(playerId: string) {
+    const idx = this.players.findIndex(p => p.id === playerId);
+    this.players.slice(idx, 1);
+  }
+
   public start() {
     this._timer.reset();
     this.round = 1;

@@ -230,4 +230,14 @@ router.post(
   },
 );
 
+router.post('/leave-room', (req: Request, res: express.Response) => {
+  const game = GameStore.findOne(req.body.gameId);
+  game.removePlayer(req.body.playerId);
+  game.emit('leave-room', req.body.playerId);
+  if (game.players.length === 0) {
+    GameStore.remove(req.body.gameId);
+  }
+  res.sendStatus(201);
+});
+
 export default router;
