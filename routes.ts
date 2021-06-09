@@ -150,7 +150,7 @@ router.post(
       const game = GameStore.findOne(req.body.gameId);
       const player = game.findPlayer(req.body.playerId);
       player.unplaceCardFromChannel(req.body.channelType);
-      res.sendStatus(201);
+      res.send(game.getStateForPlayer(req.body.playerId));
     } catch (error) {
       res.status(400).send({ error: error.message });
     }
